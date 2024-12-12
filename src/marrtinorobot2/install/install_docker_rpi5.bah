@@ -1,0 +1,49 @@
+#!/bin/bash
+
+# Update the system
+echo "Updating system..."
+sudo apt update && sudo apt upgrade -y
+
+# Install prerequisites
+echo "Installing prerequisites..."
+sudo apt install -y apt-transport-https ca-certificates curl software-properties-common
+
+# Add Docker's official GPG key
+echo "Adding Docker's GPG key..."
+curl -fsSL https://download.docker.com/linux/debian/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+
+# Set up the Docker repository
+echo "Adding Docker repository..."
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/debian     $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+# Update package list and install Docker
+echo "Installing Docker..."
+sudo apt update
+sudo apt install -y docker-ce docker-ce-cli containerd.io
+
+# Verify Docker installation
+echo "Verifying Docker installation..."
+docker --version
+
+# Optional: Add the current user to the Docker group
+echo "Adding user to the Docker group..."
+sudo usermod -aG docker $USER
+echo "Please log out and log back in to apply the changes."
+
+# Test Docker with a Hello World container
+# echo "Testing Docker installation..."
+# docker run hello-world
+
+# Optional: Install Docker Compose
+read -p "Do you want to install Docker Compose as well? (y/n): " install_compose
+if [[ $install_compose == "y" ]]; then
+    echo "Installing Docker Compose..."
+    sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+    sudo chmod +x /usr/local/bin/docker-compose
+    docker-compose --version
+    echo "Docker Compose installed successfully."
+else
+    echo "Skipping Docker Compose installation."
+fi
+
+echo "Docker installation completed successfully!"

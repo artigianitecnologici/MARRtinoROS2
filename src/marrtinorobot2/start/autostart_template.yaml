@@ -1,0 +1,12 @@
+
+
+devices:
+  robot: 2wd
+  joystick: off         # off | 2wd | 4wd | keyboard
+  laser: off            # off | hokuyo | rplidar
+  camera: usbcam        # off | usbcam | astra | xtion
+
+
+functions:
+  audioserver: on
+  pantilt: on
