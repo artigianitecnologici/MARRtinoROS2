@@ -24,21 +24,11 @@ ros2 run micro_ros_setup build_agent.sh
 source  install/setup.bash
 ### 2.3 Clone  marrtinorobot2
 
-cd $HOME/src
-git clone -b humble-devel https://github.com/ROBOTIS-GIT/dynamixel-workbench.git
-git clone -b humble-devel https://github.com/ROBOTIS-GIT/dynamixel-workbench-msgs.git
-git clone -b humble-devel https://github.com/ROBOTIS-GIT/DynamixelSDK.git
-git clone -b ros2 https://github.com/MoffKalast/vizanti.git
-git clone https://github.com/robo-friends/m-explore-ros2.git
-git clone https://github.com/ldrobotSensorTeam/ldlidar_stl_ros2.git
+
 
 
 
 cd $HOME/marrtinorobot2_ws/src
-ln -s $HOME/src/DynamixelSDK .
-ln -s $HOME/src/dynamixel-workbench .
-ln -s $HOME/src/dynamixel-workbench-msgs .
-
 #
 ln -s $HOME/src/marrtinorobot2/marrtinorobot2_base .
 ln -s $HOME/src/marrtinorobot2/marrtinorobot2_bringup .
@@ -47,13 +37,9 @@ ln -s $HOME/src/marrtinorobot2/marrtinorobot2_webinterface .
 ln -s $HOME/src/marrtinorobot2/marrtinorobot2_gazebo .
 ln -s $HOME/src/marrtinorobot2/marrtinorobot2_navigation .
 ln -s $HOME/src/m-explore-ros2/explore .
-#ln -s $HOME/src/OrbbecSDK_ROS2 .
 ln -s $HOME/src/marrtinorobot2/marrtinorobot2_vision .
 ln -s $HOME/src/marrtinorobot2/marrtinorobot2_voice .
-#ln -s $HOME/src/marrtinorobot2/marrtinorobot2_ui .
 ln -s $HOME/src/marrtinorobot2/marrtinorobot2_cartographer .
-ln -s $HOME/src/marrtinorobot2/marrtinorobot2_dynamixel .
-ln -s $HOME/src/depthai-ros .
 ln -s $HOME/src/ldlidar-stl-ros2 .
 ln -s $HOME/src/vizanti .
 sudo apt install tmux -y

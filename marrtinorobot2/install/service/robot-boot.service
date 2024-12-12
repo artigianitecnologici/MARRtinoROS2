@@ -1,8 +1,0 @@
-[Unit]
-After=NetworkManager.service time-sync.target
-[Service]
-Type=simple
-User=marrtino
-ExecStart=/bin/sh -c ". /opt/ros/humble/setup.sh;. /home/marrtino/marrtinorobot2_ws/install/setup.sh; ros2 launch marrtinorobot2_bringup bringup.launch.py joy:=true"
-[Install]
-WantedBy=multi-user.target
