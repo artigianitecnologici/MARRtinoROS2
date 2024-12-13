@@ -33,14 +33,13 @@ cd $HOME/marrtinorobot2_ws/src
 ln -s $HOME/src/marrtinorobot2/marrtinorobot2_base .
 ln -s $HOME/src/marrtinorobot2/marrtinorobot2_bringup .
 ln -s $HOME/src/marrtinorobot2/marrtinorobot2_description .
-ln -s $HOME/src/marrtinorobot2/marrtinorobot2_webinterface .
 ln -s $HOME/src/marrtinorobot2/marrtinorobot2_gazebo .
 ln -s $HOME/src/marrtinorobot2/marrtinorobot2_navigation .
 ln -s $HOME/src/m-explore-ros2/explore .
 ln -s $HOME/src/marrtinorobot2/marrtinorobot2_vision .
 ln -s $HOME/src/marrtinorobot2/marrtinorobot2_voice .
 ln -s $HOME/src/marrtinorobot2/marrtinorobot2_cartographer .
-ln -s $HOME/src/ldlidar-stl-ros2 .
+ln -s $HOME/src/ldlidar_stl_ros2 .
 ln -s $HOME/src/vizanti .
 sudo apt install tmux -y
 
@@ -86,8 +85,8 @@ sudo apt install -y ros-$ROS_DISTRO-joy
 sudo apt install -y ros-$ROS_DISTRO-teleop-twist-joystick
 
 sudo apt install -y ros-$ROS_DISTRO-joint-state-publisher
-sudo apt-get install -y ros-humble-rosbridge-suite
-
+sudo apt-get install -y ros-$ROS_DISTRO-rosbridge-suite
+sudo apt install -y ros-$ROS_DISTRO-rqt-reconfigure
 
 # astra camera
 # sudo apt install ros-$ROS_DISTRO-image-pipeline libuvc-dev
