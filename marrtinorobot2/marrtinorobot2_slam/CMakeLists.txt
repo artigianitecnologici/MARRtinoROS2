@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(ugv_slam)
+project(marrtinorobot2_slam)
 
 # Default to C99
 if(NOT CMAKE_C_STANDARD)
@@ -33,7 +33,7 @@ find_package(ament_cmake REQUIRED)
 #install(TARGETS 
 #  DESTINATION lib/${PROJECT_NAME})
 
-include_directories(include/ugv_slam)
+include_directories(include/marrtinorobot2_slam)
 install(DIRECTORY launch rviz DESTINATION share/${PROJECT_NAME})
 
 if(BUILD_TESTING)
