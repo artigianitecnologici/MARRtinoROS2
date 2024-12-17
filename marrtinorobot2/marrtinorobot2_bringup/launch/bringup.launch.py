@@ -135,7 +135,7 @@ def generate_launch_description():
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource(ldlidar_robot_launch_path),
             condition=IfCondition(LaunchConfiguration('use_ldlidar'))
-        )
+        ),
         # Include LIDAR Node Launch (conditional)
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource(rplidar_robot_launch_path),

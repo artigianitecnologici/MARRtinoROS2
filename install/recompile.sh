@@ -2,7 +2,13 @@
 ### 1.0 Create WorkSpaces
 cd $HOME/src
 # git clone https://github.com/orbbec/OrbbecSDK_ROS2.git
-# assume you have sourced ROS environment, same blow
+# git clone -b humble-devel https://github.com/ROBOTIS-GIT/dynamixel-workbench.git
+# git clone -b humble-devel https://github.com/ROBOTIS-GIT/dynamixel-workbench-msgs.git
+# git clone -b humble-devel https://github.com/ROBOTIS-GIT/DynamixelSDK.git
+# git clone -b ros2 https://github.com/MoffKalast/vizanti.git
+# git clone https://github.com/robo-friends/m-explore-ros2.git
+# git clone https://github.com/ldrobotSensorTeam/ldlidar_stl_ros2.git
+# git clone -b ros2 https://github.com/MoffKalast/vizanti.git# assume you have sourced ROS environment, same blow
 sudo apt install -y libgflags-dev nlohmann-json3-dev libgoogle-glog-dev \
 ros-$ROS_DISTRO-image-transport ros-$ROS_DISTRO-image-publisher ros-$ROS_DISTRO-camera-info-manager
 
@@ -25,12 +31,12 @@ source  install/setup.bash
 ### 2.3 Clone  marrtinorobot2
 
 cd $HOME/src
-git clone -b humble-devel https://github.com/ROBOTIS-GIT/dynamixel-workbench.git
-git clone -b humble-devel https://github.com/ROBOTIS-GIT/dynamixel-workbench-msgs.git
-git clone -b humble-devel https://github.com/ROBOTIS-GIT/DynamixelSDK.git
-git clone -b ros2 https://github.com/MoffKalast/vizanti.git
-git clone https://github.com/robo-friends/m-explore-ros2.git
-git clone https://github.com/ldrobotSensorTeam/ldlidar_stl_ros2.git
+#git clone -b humble-devel https://github.com/ROBOTIS-GIT/dynamixel-workbench.git
+#git clone -b humble-devel https://github.com/ROBOTIS-GIT/dynamixel-workbench-msgs.git
+#git clone -b humble-devel https://github.com/ROBOTIS-GIT/DynamixelSDK.git
+#git clone -b ros2 https://github.com/MoffKalast/vizanti.git
+#git clone https://github.com/robo-friends/m-explore-ros2.git
+#git clone https://github.com/ldrobotSensorTeam/ldlidar_stl_ros2.git
 
 
 
@@ -61,7 +67,10 @@ sudo apt install tmux -y
 ### 2.3 Install marrtinorobot2 package:
 cd ..
 rosdep update && rosdep install --from-path src --ignore-src -y --skip-keys microxrcedds_agent
+rosdep rosdep install -i --from-path src/vizanti -y
+colcon build
 source  install/setup.bash
+
 cp $HOME/src/marrtinorobot2/install/script/*.sh .
 
 sudo apt install gazebo -y

@@ -30,11 +30,11 @@ tmux send-keys -t $SESSION:1 "cd \$MARRTINOROBOT2_WS" C-m
 tmux send-keys -t $SESSION:1 "./rosbridge.sh > $CMD_EXE_LOG 2>&1 &" C-m  # Log output to cmdexe.lo
 
 # Commands to be executed in window 2 ('cmdexe')
-tmux send-keys -t $SESSION:2 "cd \$MARRTINOROBOT2_HOME/marrtinorobot2_webinterface/marrtinorobot2_webinterface" C-m
+tmux send-keys -t $SESSION:2 "cd ~/src/marrtinorobot2/marrtinorobot2_webinterface/marrtinorobot2_webinterface" C-m
 tmux send-keys -t $SESSION:2 "python3 command_executor.py > $CMD_EXE_LOG 2>&1 &" C-m  # Log output to cmdexe.log
 
 # Commands to be executed in window 3 ('robot_bringup')
-tmux send-keys -t $SESSION:3 "cd \$MARRTINOROBOT2_HOME/marrtinorobot2_webinterface/marrtinorobot2_webinterface" C-m
+tmux send-keys -t $SESSION:3 "cd ~/src/marrtinorobot2/marrtinorobot2_webinterface/marrtinorobot2_webinterface" C-m
 tmux send-keys -t $SESSION:3 "python3 robot_bringup.py > $ROBOT_BRINGUP_LOG 2>&1 &" C-m  # Log output to robot_bringup.log
 
 # Optional: Start other processes if needed (currently commented out)
