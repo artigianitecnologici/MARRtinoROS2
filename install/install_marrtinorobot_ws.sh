@@ -1,14 +1,7 @@
 
 ### 1.0 Create WorkSpaces
 cd $HOME/src
-# git clone https://github.com/orbbec/OrbbecSDK_ROS2.git
-# git clone -b humble-devel https://github.com/ROBOTIS-GIT/dynamixel-workbench.git
-# git clone -b humble-devel https://github.com/ROBOTIS-GIT/dynamixel-workbench-msgs.git
-# git clone -b humble-devel https://github.com/ROBOTIS-GIT/DynamixelSDK.git
-# git clone -b ros2 https://github.com/MoffKalast/vizanti.git
-# git clone https://github.com/robo-friends/m-explore-ros2.git
-# git clone https://github.com/ldrobotSensorTeam/ldlidar_stl_ros2.git
-# git clone -b ros2 https://github.com/MoffKalast/vizanti.git# assume you have sourced ROS environment, same blow
+
 sudo apt install -y libgflags-dev nlohmann-json3-dev libgoogle-glog-dev \
 ros-$ROS_DISTRO-image-transport ros-$ROS_DISTRO-image-publisher ros-$ROS_DISTRO-camera-info-manager
 
@@ -30,13 +23,6 @@ ros2 run micro_ros_setup build_agent.sh
 source  install/setup.bash
 ### 2.3 Clone  marrtinorobot2
 
-cd $HOME/src
-#git clone -b humble-devel https://github.com/ROBOTIS-GIT/dynamixel-workbench.git
-#git clone -b humble-devel https://github.com/ROBOTIS-GIT/dynamixel-workbench-msgs.git
-#git clone -b humble-devel https://github.com/ROBOTIS-GIT/DynamixelSDK.git
-#git clone -b ros2 https://github.com/MoffKalast/vizanti.git
-#git clone https://github.com/robo-friends/m-explore-ros2.git
-#git clone https://github.com/ldrobotSensorTeam/ldlidar_stl_ros2.git
 
 
 
@@ -61,7 +47,7 @@ ln -s $HOME/src/marrtinorobot2/marrtinorobot2_dynamixel .
 ln -s $HOME/src/depthai-ros .
 ln -s $HOME/src/ldlidar_stl_ros2 .
 ln -s $HOME/src/vizanti .
-sudo apt install tmux -y
+
 
 
 ### 2.3 Install marrtinorobot2 package:
@@ -70,14 +56,12 @@ rosdep update && rosdep install --from-path src --ignore-src -y --skip-keys micr
 rosdep rosdep install -i --from-path src/vizanti -y
 colcon build
 source  install/setup.bash
-
-cp $HOME/src/marrtinorobot2/install/script/*.sh .
+echo "copy script into marrtinorobot2_ws"
+cp $HOME/src/MARRtinoROS2/install/script/*.sh .
 
 sudo apt install gazebo -y
 sudo apt install -y ros-$ROS_DISTRO-rplidar-ros
 sudo apt-get install -y ros-${ROS_DISTRO}-v4l2-camera
-echo 'SUBSYSTEM=="usb", ATTRS{idVendor}=="03e7", MODE="0666"' | sudo tee /etc/udev/rules.d/80-movidius.rules
-sudo udevadm control --reload-rules && sudo udevadm trigger
 # oak d lite
 sudo apt install -y ros-$ROS_DISTRO-depthai-ros
 # navigation
