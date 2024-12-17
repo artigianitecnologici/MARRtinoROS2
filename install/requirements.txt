@@ -1,0 +1,7 @@
+pyserial
+flask
+mediapipe
+requests
+gtts
+opencv-python 
+opencv-python-headless

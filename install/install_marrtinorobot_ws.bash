@@ -1,10 +1,11 @@
-
+#!/bin/bash
 ### 1.0 Create WorkSpaces
-cd $HOME/src
+sudo apt update && sudo apt upgrade -y
 
+sudo apt install -y python3-pip alsa-utils python3-colcon-argcomplete
 sudo apt install -y libgflags-dev nlohmann-json3-dev libgoogle-glog-dev \
 ros-$ROS_DISTRO-image-transport ros-$ROS_DISTRO-image-publisher ros-$ROS_DISTRO-camera-info-manager
-
+sudo apt install net-tools htop mpg321 sox  libttspico-utils  -y
 cd $HOME
 mkdir -p marrtinorobot2_ws/src
 
@@ -48,6 +49,13 @@ ln -s $HOME/src/depthai-ros .
 ln -s $HOME/src/ldlidar_stl_ros2 .
 ln -s $HOME/src/vizanti .
 
+# ```bash
+# cd ~/colcon_ws/src
+# git clone -b ros2 https://github.com/MoffKalast/vizanti.git
+
+# cd ..
+# rosdep install -i --from-path src/vizanti -y
+# colcon build
 
 
 ### 2.3 Install marrtinorobot2 package:
@@ -57,7 +65,7 @@ rosdep rosdep install -i --from-path src/vizanti -y
 colcon build
 source  install/setup.bash
 echo "copy script into marrtinorobot2_ws"
-cp $HOME/src/MARRtinoROS2/install/script/*.sh .
+cp $HOME/src/install/script/*.sh .
 
 sudo apt install gazebo -y
 sudo apt install -y ros-$ROS_DISTRO-rplidar-ros
@@ -67,8 +75,7 @@ sudo apt install -y ros-$ROS_DISTRO-depthai-ros
 # navigation
 sudo apt install -y ros-$ROS_DISTRO-rtabmap-ros
 ## cartographer
-sudo apt install -y ros-$ROS_DISTRO-cartographer 
-sudo apt install -y ros-$ROS_DISTRO-cartographer-ros
+sudo apt install -y ros-$ROS_DISTRO-cartographer*
 sudo apt install -y ros-$ROS_DISTRO-localization
 ## Navigation Stack for ROS 2
 sudo apt install -y ros-$ROS_DISTRO-navigation2 
@@ -92,17 +99,19 @@ sudo apt install -y ros-$ROS_DISTRO-joy
 # sudo apt install -y ros-$ROS_DISTRO-teleop-twist-joystick
 
 sudo apt install -y ros-$ROS_DISTRO-joint-state-publisher
+# vizanti
 sudo apt-get install -y ros-$ROS_DISTRO-rosbridge-suite
 sudo apt install -y ros-$ROS_DISTRO-rqt-reconfigure
-
+sudo apt-get install -y ros-$ROS_DISTRO-rqt
+sudo apt-get install -y ros-$ROS_DISTRO-rqt-common-plugins
+python3 -m pip install -r requirements.txt
 
 # astra camera
 # sudo apt install ros-$ROS_DISTRO-image-pipeline libuvc-dev
 # prerequisite marrtinorobot2_voice
-pip3 install gtts
-sudo apt install mpg321 sox  libttspico-utils -y
+
+
 # prerequisiti vision
-pip3 install opencv-python opencv-python-headless
 
 
 
