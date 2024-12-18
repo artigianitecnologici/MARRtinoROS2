@@ -198,12 +198,10 @@ ln -s /home/ubuntu/src/marrtinorobot2/marrtinorobot2_bringup . && \
 ln -s /home/ubuntu/src/marrtinorobot2/marrtinorobot2_description . && \
 ln -s /home/ubuntu/src/marrtinorobot2/marrtinorobot2_webinterface . && \
 ln -s /home/ubuntu/src/marrtinorobot2/marrtinorobot2_navigation . && \
-ln -s /home/ubuntu/src/marrtinorobot2/marrtinorobot2_slam . && \
 ln -s /home/ubuntu/src/marrtinorobot2/marrtinorobot2_vision . && \
 ln -s /home/ubuntu/src/marrtinorobot2/marrtinorobot2_voice . && \
 ln -s /home/ubuntu/src/marrtinorobot2/marrtinorobot2_cartographer . && \
 ln -s /home/ubuntu/src/marrtinorobot2/marrtinorobot2_dynamixel . && \
-ln -s /home/ubuntu/src/gmapping . && \
 ln -s /home/ubuntu/src/m-explore-ros2/explore . && \
 ln -s /home/ubuntu/src/ldlidar_stl_ros2 . && \
 ln -s /home/ubuntu/src/vizanti . 
