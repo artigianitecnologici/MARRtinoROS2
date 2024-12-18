@@ -105,6 +105,7 @@ sudo apt-get install -y ros-$ROS_DISTRO-rosbridge-suite
 sudo apt install -y ros-$ROS_DISTRO-rqt-reconfigure
 sudo apt-get install -y ros-$ROS_DISTRO-rqt
 sudo apt-get install -y ros-$ROS_DISTRO-rqt-common-plugins
+
 python3 -m pip install -r requirements.txt
 
 # astra camera
