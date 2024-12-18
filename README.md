@@ -1,6 +1,6 @@
 mkdir ~/src
 cd ~/src
-git clone https://github.com/utente/MARRtinoROS2 . --filter=tree:0
+git clone https://github.com/artigianitecnologici/MARRtinoROS2 . --filter=tree:0
 
 
 disabiltare il rendering grafico su ssh
@@ -19,3 +19,6 @@ X11Forwarding no
 
 Restart service ssh
 sudo systemctl restart sshd
+
+# ripristinare i widget o applet
+mate-panel --reset
