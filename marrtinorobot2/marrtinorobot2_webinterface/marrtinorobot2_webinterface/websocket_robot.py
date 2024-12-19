@@ -2,7 +2,6 @@
 
 import os
 import time
-import random
 from datetime import datetime
 from threading import Thread
 import tornado.httpserver

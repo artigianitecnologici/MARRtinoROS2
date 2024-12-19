@@ -177,7 +177,7 @@ RUN apt-get update -q && \
     apt-get install -y \
     mpg321 sox  libttspico-utils 
 
-RUN pip3 install gtts opencv-python opencv-python-headless
+RUN pip3 install gtts opencv-python opencv-python-headless dynamixel-sdk
  
 
 # Installazione di pacchetti e repository MARRtino
