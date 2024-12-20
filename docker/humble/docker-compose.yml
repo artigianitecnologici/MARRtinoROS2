@@ -32,6 +32,7 @@ services:
       - "8085:8085"
       - "9090:9090"
       - "9326:9326"
+      - "9913:9913"
     security_opt:
       - seccomp=unconfined
     shm_size: "512m"

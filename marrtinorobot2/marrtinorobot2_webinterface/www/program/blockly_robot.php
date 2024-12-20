@@ -58,11 +58,11 @@
         </script>
          <button onclick="connect()">Connect</button> 
           <button onclick="disconnect()">Disconnect</button> 
-          <!--
+           
           <div id="connection"><font color='red'>Not Connected</font> </div>
      
           Status 
-          <div id="status" style="color: blue;" >Idle</div>  -->
+          <div id="status" style="color: blue;" >Idle</div>   
       </div>
 
     </div>
