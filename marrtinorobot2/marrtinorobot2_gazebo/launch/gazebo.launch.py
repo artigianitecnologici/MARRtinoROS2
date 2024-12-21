@@ -21,7 +21,7 @@ def generate_launch_description():
     os.environ["GAZEBO_MODEL_PATH"] = f"{gazebo_models_path}:{os.environ.get('GAZEBO_MODEL_PATH', '')}"
 
     # Set the path to the world file
-    world_file_name = 'test.world'
+    world_file_name = 'new.world'
     world_path = os.path.join(pkg_share, 'worlds', world_file_name)
 
     # Path to the EKF configuration file
