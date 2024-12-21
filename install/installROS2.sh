@@ -2,7 +2,7 @@
 
 set -e
 echo "install prerequisite"
-sudo apt update && sudo apt install -y curl gnupg2 lsb-release openssh-server net-tools terminator curl git tmux
+sudo apt update && sudo apt install -y curl gnupg2 lsb-release openssh-server net-tools terminator curl git tmux terminator
  
 
 ARCH=$(uname -i)

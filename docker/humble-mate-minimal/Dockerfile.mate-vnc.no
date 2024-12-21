@@ -2,17 +2,13 @@ FROM ubuntu:jammy
 # -20240808
 
 ARG TARGETPLATFORM
-#
 ARG Dynamixel=false
 ARG Gazebo=false
 
-
 # Install ROS
 ENV ROS_DISTRO humble
-# desktop or ros-base
 ARG INSTALL_PACKAGE=desktop
 
-#
 LABEL maintainer="ferrarini09@gmail.com>"
 
 SHELL ["/bin/bash", "-c"]
@@ -27,13 +23,10 @@ RUN apt-get update -q && \
 # Install Ubuntu Mate desktop
 RUN apt-get update -q && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y \
-        ubuntu-mate-desktop && \
+        mate-desktop-environment && \
     apt-get autoclean && \
     apt-get autoremove && \
     rm -rf /var/lib/apt/lists/*
-
-
- 
 
 # Add Package
 RUN apt-get update && \
@@ -55,39 +48,13 @@ RUN ln -s /usr/lib/novnc/vnc.html /usr/lib/novnc/index.html
 # Set remote resize function enabled by default
 RUN sed -i "s/UI.initSetting('resize', 'off');/UI.initSetting('resize', 'remote');/g" /usr/lib/novnc/app/ui.js
 
-# Disable auto update and crash report
-RUN sed -i 's/Prompt=.*/Prompt=never/' /etc/update-manager/release-upgrades
-RUN sed -i 's/enabled=1/enabled=0/g' /etc/default/apport
-
-# # Install Firefox
-# RUN DEBIAN_FRONTEND=noninteractive add-apt-repository ppa:mozillateam/ppa -y && \
-#     echo 'Package: *' > /etc/apt/preferences.d/mozilla-firefox && \
-#     echo 'Pin: release o=LP-PPA-mozillateam' >> /etc/apt/preferences.d/mozilla-firefox && \
-#     echo 'Pin-Priority: 1001' >> /etc/apt/preferences.d/mozilla-firefox && \
-#     apt-get update -q && \
-#     apt-get install -y \
-#     firefox && \
-#     apt-get autoclean && \
-#     apt-get autoremove && \
-#     rm -rf /var/lib/apt/lists/*
-
+# Install Chromium
 RUN apt update && apt install -y \
     chromium-browser \
-    fonts-liberation \
-    && rm -rf /var/lib/apt/lists/*
-
-
-# Install VSCodium
-RUN wget https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/raw/master/pub.gpg \
-    -O /usr/share/keyrings/vscodium-archive-keyring.asc && \
-    echo 'deb [ signed-by=/usr/share/keyrings/vscodium-archive-keyring.asc ] https://paulcarroty.gitlab.io/vscodium-deb-rpm-repo/debs vscodium main' \
-    | tee /etc/apt/sources.list.d/vscodium.list && \
-    apt-get update -q && \
-    apt-get install -y codium && \
-    apt-get autoclean && \
-    apt-get autoremove && \
+    fonts-liberation && \
     rm -rf /var/lib/apt/lists/*
 
+# Create User ubuntu
 RUN echo -e "\033[1;32m=== Create user ubuntu \033[0m"
 RUN useradd -m -s /bin/bash ubuntu && \
     echo "ubuntu:ubuntu" | chpasswd && \
@@ -97,6 +64,7 @@ RUN useradd -m -s /bin/bash ubuntu && \
 RUN apt-get update -q && \
     apt-get install -y shellinabox 
 
+# Install ROS2
 RUN apt-get update -q && \
     apt-get install -y curl gnupg2 lsb-release && \
     curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg && \
@@ -112,7 +80,7 @@ USER ubuntu
 RUN rosdep update
 USER root
 
-
+# Install Optional ROS Packages
 RUN if [ "$Gazebo" = "true" ]; then \
     apt-get update -q && \
     apt-get install -y \
@@ -121,9 +89,7 @@ RUN if [ "$Gazebo" = "true" ]; then \
         ros-${ROS_DISTRO}-ros-gz && \
     rm -rf /var/lib/apt/lists/*; \
     fi
-   
 
-   
 RUN apt-get update -q && \
     apt-get install -y \
         ros-humble-depthai-ros \ 
@@ -142,12 +108,9 @@ RUN apt-get update -q && \
         ros-humble-rplidar-ros \
         ros-humble-joint-state-publisher \  
         ros-humble-rosbridge-suite && \
-        rm -rf /var/lib/apt/lists/*
-#  ros-humble-localization \
+    rm -rf /var/lib/apt/lists/*
 
-
-RUN echo -e "\033[1;32mInstall Repository MARRtino Robot 2\033[0m"
-    # USER root
+# Install MARRtino Robot 2
 RUN apt-get update && \
     apt-get install -y python3-vcstool build-essential
     
@@ -156,10 +119,7 @@ RUN mkdir -p /home/ubuntu/marrtinorobot2_ws/src
 
 WORKDIR /home/ubuntu/marrtinorobot2_ws
 
-
-##
-# INSTALLAZIONE MICROROS
-##
+# Install Micro-ROS
 WORKDIR /home/ubuntu/marrtinorobot2_ws
 RUN git clone -b $ROS_DISTRO https://github.com/micro-ROS/micro_ros_setup.git src/micro_ros_setup
 RUN apt-get update \
@@ -180,94 +140,50 @@ RUN source /opt/ros/$ROS_DISTRO/setup.bash \
 
 RUN source /opt/ros/$ROS_DISTRO/setup.bash \
     && colcon build
-##
-# EOF INSTALLAZIONE MICROROS
-##
-RUN apt-get update && apt-get install -y software-properties-common && \
-    add-apt-repository universe && apt-get update
 
+# Install Dependencies for Voice and Vision
 RUN apt-get update -q && \
     apt-get install -y \
     mpg321 sox  libttspico-utils 
 
 RUN pip3 install gtts opencv-python opencv-python-headless dynamixel-sdk
- 
 
-# Installazione di pacchetti e repository MARRtino
-RUN mkdir -p /home/ubuntu/marrtinorobot2_ws/src && \ 
-    mkdir -p /home/ubuntu/src && \
-    cd /home/ubuntu/src && \
-    git clone https://github.com/artigianitecnologici/MARRtinoROS2 . --filter=tree:0
-    
-
+# Link MARRtino Modules
 WORKDIR /home/ubuntu/marrtinorobot2_ws/src
- 
-RUN cd /home/ubuntu/marrtinorobot2_ws/src  && \ 
-ln -s /home/ubuntu/src/DynamixelSDK . && \
-ln -s /home/ubuntu/src/dynamixel-workbench . && \
-ln -s /home/ubuntu/src/dynamixel-workbench-msgs .  && \
-ln -s /home/ubuntu/src/marrtinorobot2/marrtinorobot2_base . && \
-ln -s /home/ubuntu/src/marrtinorobot2/marrtinorobot2_bringup . && \
-ln -s /home/ubuntu/src/marrtinorobot2/marrtinorobot2_description . && \
-ln -s /home/ubuntu/src/marrtinorobot2/marrtinorobot2_webinterface . && \
-ln -s /home/ubuntu/src/marrtinorobot2/marrtinorobot2_navigation . && \
-ln -s /home/ubuntu/src/marrtinorobot2/marrtinorobot2_vision . && \
-ln -s /home/ubuntu/src/marrtinorobot2/marrtinorobot2_voice . && \
-ln -s /home/ubuntu/src/marrtinorobot2/marrtinorobot2_cartographer . && \
-ln -s /home/ubuntu/src/marrtinorobot2/marrtinorobot2_dynamixel . && \
-ln -s /home/ubuntu/src/m-explore-ros2/explore . && \
-ln -s /home/ubuntu/src/ldlidar_stl_ros2 . && \
-ln -s /home/ubuntu/src/vizanti . 
 
-# RUN if [ "$Gazebo" = "true" ]; then \
-#     RUN cd /home/ubuntu/marrtinorobot2_ws/src  && \ 
-#     ln -s /home/ubuntu/src/marrtinorobot2/marrtinorobot2_gazebo . 
-#     fi
- 
-# Configurazione finale per l'utente 'ubuntu'
-WORKDIR /home/ubuntu/marrtinorobot2_ws
+RUN ln -s /home/ubuntu/src/DynamixelSDK . && \
+    ln -s /home/ubuntu/src/dynamixel-workbench . && \
+    ln -s /home/ubuntu/src/dynamixel-workbench-msgs . && \
+    ln -s /home/ubuntu/src/marrtinorobot2/marrtinorobot2_base . && \
+    ln -s /home/ubuntu/src/marrtinorobot2/marrtinorobot2_bringup . && \
+    ln -s /home/ubuntu/src/marrtinorobot2/marrtinorobot2_description . && \
+    ln -s /home/ubuntu/src/marrtinorobot2/marrtinorobot2_webinterface . && \
+    ln -s /home/ubuntu/src/marrtinorobot2/marrtinorobot2_navigation . && \
+    ln -s /home/ubuntu/src/marrtinorobot2/marrtinorobot2_vision . && \
+    ln -s /home/ubuntu/src/marrtinorobot2/marrtinorobot2_voice . && \
+    ln -s /home/ubuntu/src/marrtinorobot2/marrtinorobot2_cartographer . && \
+    ln -s /home/ubuntu/src/marrtinorobot2/marrtinorobot2_dynamixel . && \
+    ln -s /home/ubuntu/src/m-explore-ros2/explore . && \
+    ln -s /home/ubuntu/src/ldlidar_stl_ros2 . && \
+    ln -s /home/ubuntu/src/vizanti .
 
-RUN cd /home/ubuntu/marrtinorobot2_ws && \
-    cp /home/ubuntu/src/install/script/* .
-
-#
+# Configurazione finale
 USER ubuntu
 RUN rosdep update && \
     rosdep install --from-paths src --ignore-src -r -y
 USER root
-# rosdep install -i --from-path src/vizanti -y
-
-USER root
 WORKDIR /home/ubuntu
-
-    
 RUN source /opt/ros/$ROS_DISTRO/setup.bash && \
-    colcon build  && \
+    colcon build && \
     source /home/ubuntu/marrtinorobot2_ws/install/setup.bash
-
-# setup environment
 
 COPY setup_environment.sh /home/ubuntu/setup_environment.sh 
 RUN chmod +x /home/ubuntu/setup_environment.sh
 RUN /home/ubuntu/setup_environment.sh
 
-RUN if [ "$Gazebo" = "true" ]; then \
-    echo "export GAZEBO_MODEL_PATH=~/.gazebo/models" && \
-    echo "export GAZEBO_RESOURCE_PATH=~/.gazebo" ; \
-    fi
-
-# Copia      
-# Enable apt-get completion after running `apt-get update` in the container
-RUN rm /etc/apt/apt.conf.d/docker-clean
-
 COPY ./entrypoint.sh /
 RUN dos2unix /entrypoint.sh
-#ENTRYPOINT [ "/bin/bash", "-c", "/entrypoint.sh" ]
 ENTRYPOINT [ "/bin/bash", "-c", "/entrypoint.sh && /home/ubuntu/src/marrtinorobot2/bringup/1-bringup.bash -docker" ]
-
 
 ENV USER ubuntu
 ENV PASSWD ubuntu
-# Esegui lo script come CMD
-# CMD [ "/bin/bash", "-ci", "~/src/marrtinorobot2/bringup/1-bringup.bash -docker" ]
-
