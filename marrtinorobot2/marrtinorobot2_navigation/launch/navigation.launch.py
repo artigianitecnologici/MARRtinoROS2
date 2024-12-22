@@ -20,11 +20,13 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.conditions import IfCondition
 from launch_ros.substitutions import FindPackageShare
 from launch_ros.actions import Node
+from launch.conditions import IfCondition, UnlessCondition
 
-MAP_NAME='house' #change to the name of your own map here
+
+MAP_NAME='playground' #change to the name of your own map here
 
 def generate_launch_description():
-    depth_sensor = os.getenv('MARRTINOROBOT2_DEPTH_SENSOR', '')
+    depth_sensor = os.getenv('marrtinorobot2_DEPTH_SENSOR', '')
 
     nav2_launch_path = PathJoinSubstitution(
         [FindPackageShare('nav2_bringup'), 'launch', 'bringup_launch.py']
@@ -41,6 +43,11 @@ def generate_launch_description():
     nav2_config_path = PathJoinSubstitution(
         [FindPackageShare('marrtinorobot2_navigation'), 'config', 'navigation.yaml']
     )
+
+    nav2_sim_config_path = PathJoinSubstitution(
+        [FindPackageShare('marrtinorobot2_navigation'), 'config', 'navigation_sim.yaml']
+    )
+
 
     return LaunchDescription([
         DeclareLaunchArgument(
@@ -63,10 +70,21 @@ def generate_launch_description():
 
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource(nav2_launch_path),
+            condition=UnlessCondition(LaunchConfiguration("sim")),
             launch_arguments={
                 'map': LaunchConfiguration("map"),
                 'use_sim_time': LaunchConfiguration("sim"),
                 'params_file': nav2_config_path
+            }.items()
+        ),
+
+        IncludeLaunchDescription(
+            PythonLaunchDescriptionSource(nav2_launch_path),
+            condition=IfCondition(LaunchConfiguration("sim")),
+            launch_arguments={
+                'map': LaunchConfiguration("map"),
+                'use_sim_time': LaunchConfiguration("sim"),
+                'params_file': nav2_sim_config_path
             }.items()
         ),
 
