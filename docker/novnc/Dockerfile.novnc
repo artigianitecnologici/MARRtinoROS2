@@ -1,0 +1,30 @@
+# docker build -t marrtinorobot2:novnc -f Dockerfile.novnc .
+# Usa una base ufficiale di Ubuntu
+FROM ubuntu:22.04
+
+# Imposta il frontend non interattivo per evitare richieste manuali
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Aggiorna i pacchetti e installa le dipendenze necessarie
+RUN apt-get update && apt-get install -y \
+    git \
+    x11vnc \
+    xvfb \
+    fluxbox \
+    novnc \
+    websockify \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# Clona il repository noVNC
+RUN git clone https://github.com/novnc/noVNC.git /opt/novnc
+
+# Copia lo script di avvio
+COPY start.sh /start.sh
+RUN chmod +x /start.sh
+
+# Espone la porta 6080 per noVNC
+EXPOSE 6080
+
+# Imposta il comando di default per il container
+CMD ["/start.sh"]

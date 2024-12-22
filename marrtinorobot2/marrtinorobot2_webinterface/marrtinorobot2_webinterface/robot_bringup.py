@@ -90,7 +90,7 @@ def run_server(port, log_publisher):
     print(f"Server started on port {port}")
     log_publisher.publish_log(f"Server started on port {port}")
 
-    panel_names = ['bringup', 'MicroROS', 'webcam', 'tts', 'rplidar','slam','explorer']
+    panel_names = ['bringup', 'MicroROS', 'webcam', 'tts', 'rplidar','ldlidar','slam','explorer']
     tmux = TmuxSend('bringup', panel_names)
 
     processes = {}
