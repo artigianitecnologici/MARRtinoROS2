@@ -15,74 +15,26 @@
 # Author: Ferrarini Fabio
 # Email : ferrarini09@gmail.com
 
-FROM ubuntu:jammy 
-# -20240808
-
-ARG TARGETPLATFORM
-#
-ARG Dynamixel=false
-ARG Gazebo=false
-
-
-# Install ROS
-ENV ROS_DISTRO humble
-# desktop or ros-base
-ARG INSTALL_PACKAGE=desktop
-
+FROM ros:humble  
+USER root
 #
 LABEL maintainer="ferrarini09@gmail.com>"
-
 SHELL ["/bin/bash", "-c"]
-
 # Upgrade OS
-RUN apt-get update -q && \
-    DEBIAN_FRONTEND=noninteractive apt-get upgrade -y && \
-    apt-get autoclean && \
-    apt-get autoremove && \
+USER root
+RUN echo -e "\033[1;32m === Upgrade OS  === \033[0m"
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    software-properties-common && \
+    apt-get clean && \
     rm -rf /var/lib/apt/lists/*
-
-# Install Ubuntu Mate desktop
-RUN apt-get update -q && \
-    DEBIAN_FRONTEND=noninteractive apt-get install -y \
-        ubuntu-mate-desktop && \
-    apt-get autoclean && \
-    apt-get autoremove && \
-    rm -rf /var/lib/apt/lists/*
-
-
- # Add Package
+RUN echo -e "\033[1;32m === Install prerequisite  === \033[0m"
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y \
-        tigervnc-standalone-server tigervnc-common \
         supervisor wget curl gosu git sudo python3-pip tini tmux netcat nano \
         build-essential vim sudo lsb-release locales \
-        bash-completion tzdata terminator dos2unix shellinabox \
-        chromium-browser fonts-liberation && \
+        bash-completion tzdata  dos2unix shellinabox && \
         apt-get autoclean && \
-    apt-get autoremove && \
-    rm -rf /var/lib/apt/lists/*
-
-
-# noVNC e Websockify
-RUN git clone https://github.com/novnc/noVNC.git /usr/lib/novnc
-RUN pip install git+https://github.com/novnc/websockify.git@v0.11.0
-RUN ln -s /usr/lib/novnc/vnc.html /usr/lib/novnc/index.html
-# Set remote resize function enabled by default
-RUN sed -i "s/UI.initSetting('resize', 'off');/UI.initSetting('resize', 'remote');/g" /usr/lib/novnc/app/ui.js
-
-# Disable auto update and crash report
-RUN sed -i 's/Prompt=.*/Prompt=never/' /etc/update-manager/release-upgrades
-RUN sed -i 's/enabled=1/enabled=0/g' /etc/default/apport
-
-
-# Install VSCodium
-RUN wget https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/raw/master/pub.gpg \
-    -O /usr/share/keyrings/vscodium-archive-keyring.asc && \
-    echo 'deb [ signed-by=/usr/share/keyrings/vscodium-archive-keyring.asc ] https://paulcarroty.gitlab.io/vscodium-deb-rpm-repo/debs vscodium main' \
-    | tee /etc/apt/sources.list.d/vscodium.list && \
-    apt-get update -q && \
-    apt-get install -y codium && \
-    apt-get autoclean && \
     apt-get autoremove && \
     rm -rf /var/lib/apt/lists/*
 
@@ -93,35 +45,6 @@ RUN useradd -m -s /bin/bash ubuntu && \
     usermod -aG sudo ubuntu && \
     echo "ubuntu ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
-# --- INSTALL ROS 2 ---
-
-RUN apt-get update -q && \
-    apt-get install -y curl gnupg2 lsb-release && \
-    curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg && \
-    echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/ros2.list > /dev/null && \
-    apt-get update -q && \
-    apt-get install -y ros-${ROS_DISTRO}-${INSTALL_PACKAGE} \
-    python3-argcomplete \
-    python3-colcon-common-extensions \
-    python3-rosdep python3-vcstool && \
-    rosdep init && \
-    rm -rf /var/lib/apt/lists/*
-
-
-USER ubuntu
-RUN rosdep update
-USER root
-
-
-RUN if [ "$Gazebo" = "true" ]; then \
-    apt-get update -q && \
-    apt-get install -y \
-        gazebo \
-        ros-${ROS_DISTRO}-gazebo-ros-pkgs \
-        ros-${ROS_DISTRO}-ros-gz && \
-    rm -rf /var/lib/apt/lists/*; \
-    fi
-   
 USER ubuntu
 RUN mkdir -p /home/ubuntu/marrtinorobot2_ws/src
 
@@ -131,7 +54,6 @@ WORKDIR /home/ubuntu/marrtinorobot2_ws
 RUN source /opt/ros/${ROS_DISTRO}/setup.bash && \
     colcon build --symlink-install && \
     source install/setup.bash
-   
 # --- Installazione di pacchetti ROS aggiuntivi ---
 RUN sudo apt-get update -q && \
     sudo apt-get install -y \
@@ -150,12 +72,15 @@ RUN sudo apt-get update -q && \
         ros-humble-joy \
         ros-humble-rplidar-ros \
         ros-humble-joint-state-publisher \  
-    ros-humble-rosbridge-suite  && \
+        ros-humble-rviz2 \
+        ros-humble-teleop-twist-joy \
+        ros-humble-teleop-twist-keyboard \
+        ros-humble-depthimage-to-laserscan \
+        ros-humble-rosbridge-suite  && \
     sudo apt-get autoclean && \
     sudo apt-get autoremove && \
     sudo rm -rf /var/lib/apt/lists/*
 #  ros-humble-localization \
-
 #
 # INSTALLAZIONE MICROROS
 ##
@@ -182,11 +107,6 @@ RUN source /opt/ros/$ROS_DISTRO/setup.bash \
 ##
 # EOF INSTALLAZIONE MICROROS
 ##
-#RUN echo -e "\033[1;32mInstall Repository MARRtino Robot 2\033[0m"
-    # USER root
-# RUN apt-get update && \
-#     apt-get install -y python3-vcstool build-essential
-# --- Clona repository ---# Installazione di pacchetti e repository MARRtino
 RUN mkdir -p /home/ubuntu/marrtinorobot2_ws/src && \ 
 mkdir -p /home/ubuntu/src && \
 cd /home/ubuntu/src && \
@@ -212,14 +132,6 @@ RUN cd /home/ubuntu/marrtinorobot2_ws/src  && \
 
 # --- Costruzione del workspace ---
 WORKDIR /home/ubuntu/marrtinorobot2_ws
-
-# RUN apt-get update && apt-get install -y software-properties-common && \
-#     add-apt-repository universe && apt-get update
-
-
-
-
- 
 # --- Costruzione del workspace ---
 WORKDIR /home/ubuntu/marrtinorobot2_ws
 RUN cd /home/ubuntu/marrtinorobot2_ws && \
@@ -228,18 +140,7 @@ RUN cd /home/ubuntu/marrtinorobot2_ws && \
 RUN source /opt/ros/$ROS_DISTRO/setup.bash && \
     colcon build  && \
     source /home/ubuntu/marrtinorobot2_ws/install/setup.bash
-
-# --- Configura Gazebo se abilitato ---
-RUN if [ "$Gazebo" = "true" ]; then \
-    sudo apt-get update -q && \
-    sudo apt-get install -y gazebo ros-${ROS_DISTRO}-gazebo-ros-pkgs ros-${ROS_DISTRO}-ros-gz && \
-    rm -rf /var/lib/apt/lists/*; \
-    fi
-
-
-
-
-RUN cd /home/ubuntu/marrtinorobot2_ws && \
+    RUN cd /home/ubuntu/marrtinorobot2_ws && \
     cp /home/ubuntu/src/install/script/* .
 
 USER root
@@ -251,6 +152,7 @@ RUN apt-get update -q && \
 RUN apt-get update && apt-get install -y \
     python3-pip \
     python3-flask \
+    python3-scipy \
     ros-humble-apriltag \
     ros-humble-joy-linux \
     ros-humble-laser-filters && \
@@ -258,9 +160,9 @@ RUN apt-get update && apt-get install -y \
 
 # Installa opencv-python tramite pip
 RUN pip3 install opencv-python gtts opencv-python-headless dynamixel-sdk
-
 USER ubuntu
 # Aggiorna rosdep e installa le dipendenze del workspace ROS 2
+RUN echo -e "\033[1;32m=== Update rosdep \033[0m"
 RUN rosdep update && \
     rosdep install --from-paths src --ignore-src -r -y
 
@@ -268,7 +170,6 @@ RUN rosdep update && \
 USER root
 WORKDIR /home/ubuntu
 
-    
 RUN source /opt/ros/$ROS_DISTRO/setup.bash && \
     colcon build  && \
     source /home/ubuntu/marrtinorobot2_ws/install/setup.bash
@@ -278,14 +179,6 @@ RUN source /opt/ros/$ROS_DISTRO/setup.bash && \
 COPY setup_environment.sh /home/ubuntu/setup_environment.sh 
 RUN chmod +x /home/ubuntu/setup_environment.sh && /home/ubuntu/setup_environment.sh
 
-
-RUN if [ "$Gazebo" = "true" ]; then \
-    echo "export GAZEBO_MODEL_PATH=~/.gazebo/models" && \
-    echo "export GAZEBO_RESOURCE_PATH=~/.gazebo" ; \
-    fi
-
-# Copia      
-# Enable apt-get completion after running `apt-get update` in the container
 RUN rm /etc/apt/apt.conf.d/docker-clean
 
 COPY ./entrypoint.sh /
@@ -295,5 +188,3 @@ ENTRYPOINT [ "/bin/bash", "-c", "/entrypoint.sh" ]
 
 ENV USER ubuntu
 ENV PASSWD ubuntu
-
-
