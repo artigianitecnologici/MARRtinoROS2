@@ -18,17 +18,17 @@ if [ "$USER" != "root" ]; then
     [ -d "/dev/snd" ] && chgrp -R adm /dev/snd
 fi
 
-# Supervisor
-CONF_PATH=/etc/supervisor/conf.d/supervisord.conf
-cat << EOF > $CONF_PATH
-[supervisord]
-nodaemon=true
-user=root
-[program:vnc]
-command=gosu '$USER' bash '$VNCRUN_PATH'
-[program:novnc]
-command=gosu '$USER' bash -c "websockify --web=/usr/lib/novnc 8085 localhost:5901"
-EOF
+# # Supervisor
+# CONF_PATH=/etc/supervisor/conf.d/supervisord.conf
+# cat << EOF > $CONF_PATH
+# [supervisord]
+# nodaemon=true
+# user=root
+# [program:vnc]
+# command=gosu '$USER' bash '$VNCRUN_PATH'
+# [program:novnc]
+# command=gosu '$USER' bash -c "websockify --web=/usr/lib/novnc 8085 localhost:5901"
+# EOF
 
 # colcon
 BASHRC_PATH=$HOME/.bashrc
@@ -41,8 +41,6 @@ mkdir -p $HOME/.ros
 cp -r /root/.ros/rosdep $HOME/.ros/rosdep
 chown -R $USER:$USER $HOME/.ros
 
-getEnvironment=Unity
-EOF
 
 # chown -R $USER:$USER $HOME/Desktop
 
@@ -93,4 +91,4 @@ echo "NOTE 1: --security-opt seccomp=unconfined flag is required to launch Ubunt
 echo -e 'See \e]8;;https://github.com/Tiryoh/docker-ros2-desktop-vnc/pull/56\e\\https://github.com/Tiryoh/docker-ros2-desktop-vnc/pull/56\e]8;;\e\\'
 echo "============================================================================================"
 
-exec /bin/tini -- supervisord -n -c /etc/supervisor/supervisord.conf
+# exec /bin/tini -- supervisord -n -c /etc/supervisor/supervisord.conf
