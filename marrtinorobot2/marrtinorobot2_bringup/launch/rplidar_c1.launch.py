@@ -14,54 +14,53 @@
 #
 # Author: Ferrarini Fabio
 # Email : ferrarini09@gmail.com
+
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument
+from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
+from launch.launch_description_sources import PythonLaunchDescriptionSource
+import os
+from ament_index_python.packages import get_package_share_directory
 
 
 def generate_launch_description():
+    # Path to the second launch file
+    sllidar_launch_path = os.path.join(
+        get_package_share_directory('sllidar_ros2'),
+        'launch',
+        'sllidar_launch.py'  # Replace with the actual name of your second launch file
+    )
+
     return LaunchDescription([
         DeclareLaunchArgument(
             name='topic_name', 
             default_value='scan',
             description='Laser Topic Name'
         ),
-
         DeclareLaunchArgument(
             name='frame_id', 
             default_value='laser',
             description='Laser Frame ID'
         ),
-
-        DeclareLaunchArgument(
-            name='lidar_transport',
-            default_value='serial',
-            description='Lidar transport: serial, udp_server, udp_client, tcp_server, tcp_client'
-        ),
-
         DeclareLaunchArgument(
             name='lidar_serial_port',
             default_value='/dev/ttyUSB0',
             description='Lidar serial port device name'
         ),
+        DeclareLaunchArgument(
+            name='lidar_serial_baudrate',
+            default_value='460800',
+            description='Lidar serial baudrate'
+        ),
 
-               
-    Node(
-        package='ldlidar_stl_ros2',
-        executable='ldlidar_stl_ros2_node',
-        name='LD06',
-        output='screen',
-        parameters=[
-            {'product_name': 'LDLiDAR_LD06'},
-            {'topic_name': 'scan'},
-            {'frame_id': 'base_laser'},
-            {'port_name': '/dev/ttyUSB0'},
-            {'port_baudrate': 230400},
-            {'laser_scan_dir': True},
-            {'enable_angle_crop_func': False},
-            {'angle_crop_min': 135.0},
-            {'angle_crop_max': 225.0}
-        ])
-])
-
+        IncludeLaunchDescription(
+            PythonLaunchDescriptionSource(sllidar_launch_path),
+            launch_arguments={
+                'serial_port': LaunchConfiguration('lidar_serial_port'),
+                'serial_baudrate': LaunchConfiguration('lidar_serial_baudrate'),
+                'frame_id': LaunchConfiguration('frame_id'),
+                'angle_compensate': 'true',  # You can adjust or pass this as an argument too
+            }.items(),
+        ),
+    ])
