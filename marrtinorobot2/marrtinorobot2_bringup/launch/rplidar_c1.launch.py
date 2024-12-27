@@ -29,7 +29,7 @@ def generate_launch_description():
     sllidar_launch_path = os.path.join(
         get_package_share_directory('sllidar_ros2'),
         'launch',
-        'sllidar_launch.py'  # Replace with the actual name of your second launch file
+        'sllidar_c1_launch.py'  # Replace with the actual name of your second launch file
     )
 
     return LaunchDescription([
