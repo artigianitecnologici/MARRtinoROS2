@@ -26,20 +26,20 @@ services:
     restart: always
 
   humble:
-    image: ferrarinifabio/marrtinorobot2:mate-vnc
+    image: marrtinorobot2:ros2-mate-vnc
     container_name: humble
     ports:
-      - "8085:8085"
+      - "8085:8085" # vnc
       - "9090:9090"
       - "9326:9326"
       - "9913:9913"
+      - "5001:5001" # Vizanti
     security_opt:
       - seccomp=unconfined
     shm_size: "512m"
     environment:
       - PULSE_SERVER=unix:/run/user/1000/pulse/native
     volumes:
-      - ../www:/home/ubuntu/src/marrtinorobot2
       - /dev:/dev
       - /run/user/1000/pulse/native:/run/user/1000/pulse/native
     dns: 8.8.8.8

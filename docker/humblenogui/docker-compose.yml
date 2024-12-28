@@ -29,10 +29,11 @@ services:
     image: marrtinorobot2:humble
     container_name: Dockerfile.system
     ports:
-      - "8085:8085"
+      - "8085:8085" # vnc
       - "9090:9090"
       - "9326:9326"
       - "9913:9913"
+      - "5001:5001" # Vizanti
     security_opt:
       - seccomp=unconfined
     shm_size: "512m"

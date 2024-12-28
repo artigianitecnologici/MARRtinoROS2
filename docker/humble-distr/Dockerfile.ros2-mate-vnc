@@ -20,7 +20,7 @@ FROM ubuntu:jammy
 
 ARG TARGETPLATFORM
 #
-ARG Dynamixel=false
+ARG Dynamixel=true
 ARG Gazebo=false
 
 
@@ -184,16 +184,16 @@ RUN source /opt/ros/$ROS_DISTRO/setup.bash \
 ##
 RUN echo -e "\033[1;32mInstall Repository MARRtino Robot 2 \033[0m"
 # --- Clona repository ---# Installazione di pacchetti e repository MARRtino
-RUN mkdir -p /home/ubuntu/marrtinorobot2_ws/src && \ 
-mkdir -p /home/ubuntu/src && \
-cd /home/ubuntu/src && \
-git clone https://github.com/artigianitecnologici/MARRtinoROS2 . --filter=tree:0
+# RUN mkdir -p /home/ubuntu/marrtinorobot2_ws/src && \ 
+# mkdir -p /home/ubuntu/src && \
+# cd /home/ubuntu/src && \
+# git clone https://github.com/artigianitecnologici/MARRtinoROS2 . --filter=tree:0
 
 
 RUN mkdir -p /home/ubuntu/marrtinorobot2_ws/src && \
     mkdir -p /home/ubuntu/src && \
     cd /home/ubuntu/src && \
-    git clone https://artigianitecnologici/marrtinorobot2.git && \
+    git clone https://github.com/artigianitecnologici/marrtinorobot2.git && \
     git clone https://github.com/robo-friends/m-explore-ros2.git && \
     git clone -b ros2 https://github.com/MoffKalast/vizanti.git && \
     git clone https://github.com/ldrobotSensorTeam/ldlidar_stl_ros2.git && \
@@ -240,8 +240,8 @@ WORKDIR /home/ubuntu/marrtinorobot2_ws
  
 # --- Costruzione del workspace ---
 WORKDIR /home/ubuntu/marrtinorobot2_ws
-RUN cd /home/ubuntu/marrtinorobot2_ws && \
-    cp /home/ubuntu/src/install/script/* .
+# RUN cd /home/ubuntu/marrtinorobot2_ws && \
+#     cp /home/ubuntu/src/install/script/* .
 
 RUN source /opt/ros/$ROS_DISTRO/setup.bash && \
     colcon build  && \
@@ -258,7 +258,7 @@ RUN if [ "$Gazebo" = "true" ]; then \
 
 
 RUN cd /home/ubuntu/marrtinorobot2_ws && \
-    cp /home/ubuntu/src/install/script/* .
+    cp /home/ubuntu/src/marrtinorobot2/install/script/* .
 
 USER root
 
