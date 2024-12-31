@@ -39,9 +39,6 @@ services:
       - $MARRTINOROBOT2_HOME:/home/ubuntu/src/marrtinorobot2
       - /dev:/dev
       - /run/user/1000/pulse/native:/run/user/1000/pulse/native
-    dns: 8.8.8.8
-    networks:
-      - web_network
     privileged: true
     tty: true
     stdin_open: true
@@ -49,5 +46,5 @@ services:
 
 
 networks:
-  web_network:
+  default:
     name: marrtino-social-network
