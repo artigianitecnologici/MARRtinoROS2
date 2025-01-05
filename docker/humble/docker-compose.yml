@@ -46,5 +46,5 @@ services:
 
 
 networks:
-  default:
+  web_network:
     name: marrtino-social-network

@@ -90,21 +90,22 @@ if ( !empty($_POST)) {
   <script type="text/javascript" type="text/javascript">
     
     var ros = new ROSLIB.Ros({
- 
       url: 'ws:' + window.location.hostname +':9090'
- 
     });
 
     ros.on('connection', function () {
       document.getElementById("status").innerHTML = "Connected";
+      console.log("connected");  
     });
 
     ros.on('error', function (error) {
       document.getElementById("status").innerHTML = "Error";
+      console.log("error");  
     });
 
     ros.on('close', function () {
       document.getElementById("status").innerHTML = "Closed";
+      console.log("Closed");  
     });
     // 
     var txt_listener = new ROSLIB.Topic({
@@ -117,6 +118,30 @@ if ( !empty($_POST)) {
       document.getElementById("msg").innerHTML = m.data;
       
     });
+    var speechTopic = new ROSLIB.Topic({
+      ros: ros,
+      name : '/speech/to_speak',
+      messageType: 'std_msgs/String'
+    });
+
+    var speechLanguageTopic = new ROSLIB.Topic({
+      ros: ros,
+      name : '/speech/language',
+      messageType: 'std_msgs/String'
+    });
+
+    function speak( testo){
+      var msg_speak = new ROSLIB.Message({
+            data: testo
+      });
+      FaceExpression('speak')
+      startgesture()
+      speechTopic.publish(msg_speak); // error here als
+      console.log(msg_speak);
+      
+      console.log("speech");   
+    }
+
     
    //* A topic for messaging.
 var panTopic = new ROSLIB.Topic({
@@ -165,29 +190,6 @@ var emotionTopic = new ROSLIB.Topic({
 
    //* A topic for messaging.
    
-var speechTopic = new ROSLIB.Topic({
-  ros: ros,
-  name : '/speech/to_speak',
-  messageType: 'std_msgs/String'
-});
-
-var speechLanguageTopic = new ROSLIB.Topic({
-  ros: ros,
-  name : '/speech/language',
-  messageType: 'std_msgs/String'
-});
-
-function speak( testo){
-  var msg_speak = new ROSLIB.Message({
-        data: testo
-  });
-  FaceExpression('speak')
-  startgesture()
-  speechTopic.publish(msg_speak); // error here als
-  console.log(msg_speak);
-  
-  console.log("speech");   
-}
 
 
 function speaken( testo){
@@ -474,7 +476,7 @@ initPanTilt= function() {
  </div>
 
   </form>
-    
+ 
 </body>
 
 </html>

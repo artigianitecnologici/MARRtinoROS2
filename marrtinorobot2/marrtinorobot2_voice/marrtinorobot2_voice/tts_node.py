@@ -1,108 +1,75 @@
+#!/usr/bin/env python3
 import rclpy
 from rclpy.node import Node
 from std_msgs.msg import String
 from gtts import gTTS
 import os
 import socket
-from pydub import AudioSegment
-from subprocess import Popen, PIPE
-import requests.packages.urllib3
-requests.packages.urllib3.disable_warnings()
-
-tmpfile = "/tmp/cacheita.mp3"
-wavfile = "/tmp/cacheita.wav"
-offfile = "/tmp/cache.wav"
-
+import subprocess
 
 class TTSNode(Node):
 
     def __init__(self):
         super().__init__('tts_node')
-        self.get_logger().info('Start tts_node v.1.00')
-        self.publisher_ = self.create_publisher(String, '/social/speech/status', 10)
-        self.subscription = self.create_subscription(
+        self.get_logger().info('Start tts_node v.1.01')
+        self.publisher_ = self.create_publisher(String, '/speech/status', 10)
+        
+        # Subscription to receive text to speak
+        self.subscription_text = self.create_subscription(
             String,
-            '/social/speech/to_speak',
+            '/speech/to_speak',
             self.tts_callback,
             10)
-        self.lang_subscription = self.create_subscription(
+        
+        # Subscription to receive language parameter
+        self.subscription_lang = self.create_subscription(
             String,
-            '/social/speech/language',
+            '/speech/language',
             self.language_callback,
             10)
-
+        
         # Default language
-        self.language = 'it'  # Italian by default
-        # For managing speaking state
-        self.finished_speaking = False
-        self.loop_count_down = 0
-        self.rate = self.create_rate(10)  # Set loop frequency to 10Hz
+        self.language = 'it'
         self.connected = True
         self.msgoffline = False
 
+        msgstart = "ros2 topic pub  -1 /speech/to_speak std_msgs/msg/String '{data: \"tutti i sistemi sono operativi\"}'"
+        os.system(msgstart)
+
     def language_callback(self, msg):
+        # Update the language based on received message
         # Convert the language setting to Unicode
-        self.language = msg.data
-        self.get_logger().info(f'Language updated to: "{self.language}"')
+        self.language = msg.data.decode('utf-8')
+        self.get_logger().info(f'Language set to: {self.language}')
 
     def tts_callback(self, msg):
-        # Convert the incoming text to Unicode
-        text = msg.data  # Ensures proper decoding of special characters
+        text = msg.data
         self.get_logger().info(f'Received text: "{text}"')
-        self.get_logger().info(f'Using language: "{self.language}"')
         self.finished_speaking = False
         self.loop_count_down = 0
 
         # Check internet connectivity
         if self.is_connected():
-            try:
-                # Convert text to speech using Google TTS
-                self.get_logger().info(f"gtts={text}")
-                tts = gTTS(text, lang=self.language)
-                tts.save(tmpfile)
-                sound = AudioSegment.from_mp3(tmpfile)
-                sound.export(wavfile, format="wav")
-                if self.language in ['it-IT', 'it']:
-                    p = Popen("play " + wavfile + " -q pitch 300 rate 48000", stdout=PIPE, shell=True)
-                else:
-                    p = Popen("play " + wavfile + " -q ", stdout=PIPE, shell=True)
-                p.wait()
-
-                # Publish the fact that the TTS is done
-                self.publisher_.publish(String(data='TTS done'))
-            except Exception as e:
-                self.get_logger().error(f"Error in TTS conversion: {str(e)}")
+            # Convert text to speech using the set language
+            tts = gTTS(text, lang=self.language)
+            filename = "/tmp/output.mp3"
+            tts.save(filename)
+            os.system('mpg321 ' + filename)
+            # Publish the fact that the TTS is done
+            self.publisher_.publish(String(data='TTS done'))
         else:
-            # Fallback to pico2wave if there's no internet connection
             if self.language == 'it':
                 self.language = 'it-IT'
             if self.language == 'en':
                 self.language = 'en-US'
-
-            if text == 'attivazione':
-                self.connected = True
-                if self.is_connected():
-                    p = Popen("pico2wave -l " + self.language + " -w " + wavfile + " ' Sono connesso a internet e ricordati' ", stdout=PIPE, shell=True)
-                    p.wait()
-                    p = Popen("play " + wavfile + " -q --norm", stdout=PIPE, shell=True)
-                    p.wait()
-                    self.msgoffline = False
-
-            if self.msgoffline:
-                p = Popen("pico2wave -l " + self.language + " -w " + wavfile + " 'sono disconnesso dalla rete internet  , per verificare la connessione invia la parola attivazione '  ", stdout=PIPE, shell=True)
-                p.wait()
-                p = Popen("play " + wavfile + " -q --norm", stdout=PIPE, shell=True)
-                p.wait()
-                self.msgoffline = False
-
-            # Fallback to pico2wave
-            self.get_logger().info(f"pico={text}")
-            p = Popen("pico2wave -l " + self.language + " -w " + wavfile + " '" + text + "' ", stdout=PIPE, shell=True)
-            p.wait()
-            p = Popen("play " + wavfile + " -q --norm", stdout=PIPE, shell=True)
-            p.wait()
+                
+            filename = "/tmp/robot_speach.wav"
+            cmd = ['pico2wave', '--wave=' + filename, '--lang=' + self.language, text]
+            subprocess.call(cmd)
+            cmd = ['play', filename, '--norm', '-q']
+            subprocess.call(cmd)
             self.finished_speaking = True
-            self.loop_count_down = int(10 * 2)  # 2 seconds delay at 10Hz rate
+            self.loop_count_down = int(self.LOOP_FREQUENCY * 2)
 
     def speaking_finished(self):
         if self.finished_speaking:
@@ -113,32 +80,21 @@ class TTSNode(Node):
                 self.publisher_.publish(String(data='TTS done'))
 
     def is_connected(self):
-        if self.connected:
-            try:
-                # Create a socket with a very short timeout (e.g., 0.1 seconds)
-                sock = socket.create_connection(("www.google.it", 80), timeout=0.1)
-                sock.close()  # Close the socket after connecting
-                return True
-            except socket.error as e:
-                self.get_logger().info(f"No internet connection: {str(e)}")
-                self.connected = False
-                self.msgoffline = True
-                return False
-        else:
+        try:
+            # Try to connect to a well-known website
+            socket.create_connection(("www.google.com", 80))
+            return True
+        except OSError:
             return False
-
-    def spin(self):
-        while rclpy.ok():
-            self.speaking_finished()
-            self.rate.sleep()
-
-
+        
 def main(args=None):
     rclpy.init(args=args)
-    node = TTSNode()
-    node.spin()
+    tts_node = TTSNode()
+    rclpy.spin(tts_node)
+    tts_node.destroy_node()
     rclpy.shutdown()
 
 
 if __name__ == '__main__':
     main()
+# ros2 topic pub /speech/language std_msgs/msg/String '{data: "en"}'
