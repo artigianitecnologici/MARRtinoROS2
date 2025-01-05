@@ -1,5 +1,5 @@
 :root {
-  --face-color: rgb(250, 206, 240);
+  --face-color: rgb(7, 7, 7);
   --face-height: 100vh;
   --face-width: 100vw;
   --eye-size: 26.00vmin;
@@ -50,7 +50,7 @@ body {
 .bulb {
   height: calc(var(--bulb-size) * 1.2);
   width: var(--bulb-size);
-  top: 22%;
+  top: 10%;
   position: relative;
 }
 
@@ -105,8 +105,8 @@ body {
 .mouth {
   height: var(--mouth-height);
   width: var(--mouth-width);
-  bottom: 5%;
-  left: 30%;
+  bottom: 15%;
+  left: 40%;
   z-index: 4;
   position: absolute;
 }

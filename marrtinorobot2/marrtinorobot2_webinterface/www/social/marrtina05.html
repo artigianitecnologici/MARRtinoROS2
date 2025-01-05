@@ -1,5 +1,5 @@
-<!--
- # Copyright 2025 robotics-3d.com
+<!-- 
+ # Copyright 2025 robotics-3d.com 
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -25,10 +25,10 @@
   <script type="text/javascript" src="js/eventemitter2.min.js"></script>
   <script type="text/javascript" type="text/javascript">
     function refreshPage(t){
-
+  
       setTimeout("location.reload(true);", t);
-
-    }
+  
+    } 
     </script>
   <script type="text/javascript" type="text/javascript">
     var teleop;
@@ -37,18 +37,18 @@
     });
 
     ros.on('connection', function () {
-        console.log("Connected");
+        console.log("Connected"); 
     });
 
     ros.on('error', function (error) {
-        console.log("Error");
+        console.log("Error"); 
     });
 
     ros.on('close', function () {
-       console.log("Close");
+       console.log("Close"); 
     });
-    //
-
+    // 
+    
 	// SONAR
 	var sonar0_listener = new ROSLIB.Topic({
       ros: ros,
@@ -60,25 +60,25 @@
       //document.getElementById("emotion").innerHTML = m.data;
       console.log("Emotion");
       console.log(m.data);
-
+	  
 	  if (m.data == "normal") {
         eyes.normal();
-      }
+      } 
       if (m.data == "happy") {
         eyes.happy();
-      }
+      } 
 	  if (m.data == "surprise") {
         eyes.surprise();
       }
 	  if (m.data == "angry") {
         eyes.angry();
-      }
+      } 
 	  if (m.data == "sad") {
         eyes.sad();
-      }
+      } 
       if (m.data == "speak") {
         eyes.speak();
-      }
+      } 
 	  if (m.data == "sings") {
         eyes.sings();
       }
@@ -87,21 +87,21 @@
       }
       if (m.data == "startblinking") {
         eyes.startBlinking();
-      }
+      } 
       if (m.data == "stopblinking") {
         eyes.stopBlinking();
       }
    });
 
-
+       
     window.onload = function () {
-
-
+	  
+	  
     }
 
   </script>
 
-  <link rel="stylesheet" href="css/marrtina04.css">
+  <link rel="stylesheet" href="css/marrtina05.css">
   <script type="text/javascript">
     function movePupilsRandomly() {
       // Seleziona le pupille
@@ -125,7 +125,7 @@
 </head>
 
 <body onload="movePupilsRandomly();">
-   <div class="buttons">
+  <!-- <div class="buttons">
     <button onclick="eyes.startBlinking()">Start Blink</button>
     <button onclick="eyes.stopBlinking()">Stop</button>
  	<button onclick="eyes.normal()" >Nor</button>
@@ -137,35 +137,35 @@
     <button onclick="eyes.focused()" >Foc</button>
 	 <button onclick="eyes.surprise()" >sur</button>
     <button onclick="eyes.confused()" >Conf</button>
-
-  </div>
+  
+  </div> -->
   <div class="face">
     <!-- <div class="eyebrow left">
       <img id="soprdx" src="image/eyebrowsx1.gif" width="80%">
     </div> -->
     <div class="bulb left">
-      <img id="occhiosx" src="image/face04/BulbSx.png" width="100%">
+      <!-- <img id="occhiosx" src="image/face05/BulbSx.png" width="80%"> -->
       <div class="eye left">
-        <img id="pupsx" src="image/face04/Pupilla.png" class="pupil">
+        <img id="pupsx" src="image/face05/BulbSx.png" class="pupil">
       </div>
     </div>
     <!-- <div class="eyebrow right">
       <img id="soprsx" src="image/eyebrowdx1.gif" width="80%">
     </div> -->
     <div class="bulb right">
-      <img id="occhiodx" src="image/face04/BulbDx.png" width="100%">
+      <!-- <img id="occhiodx" src="image/face05/BulbDx.png" width="80%"> -->
       <div class="eye right">
-        <img id="pupdx" src="image/face04/Pupilla.png" class="pupil">
+        <img id="pupdx" src="image/face05/BulbDx.png" class="pupil">
       </div>
     </div>
-    <!-- <div class="nose">
-      <img id="naso" src="image/face04/nosetalkmarrtina3.gif" width="100%">
-    </div> -->
+    <div class="nose">
+      <img id="naso" src="image/nosetalkmarrtina1.gif" width="100%">
+    </div>
     <div class="mouth">
-      <img id="bocca" src="image/face02/boccastabile.png" width="110%">
+      <img id="bocca" src="image/face02/boccastabile.png" width="210%">
     </div>
   </div>
-  <script  src="js/marrtina04.js"></script>
+  <script  src="js/marrtina05.js"></script>
 </body>
 
 </html>
