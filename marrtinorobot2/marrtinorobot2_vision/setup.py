@@ -15,7 +15,12 @@ setup(
         (os.path.join('share', package_name, 'launch'), glob('launch/*.py')),
         (os.path.join('share', package_name, 'config'), glob(os.path.join('config', '*'))),
     ],
-    install_requires=['setuptools'],
+    install_requires=[
+        'setuptools',          # Necessario per ROS 2
+        'opencv-python',       # Libreria OpenCV
+        'opencv-python-headless',  # Versione senza GUI
+        'apriltag',            # Riconoscimento di Apriltag
+    ],
     zip_safe=True,
     maintainer='Ferrarini Fabio',
     maintainer_email='ferrarini09@gmail.com',
@@ -23,13 +28,11 @@ setup(
     license='TODO: License declaration',
     tests_require=['pytest'],
     entry_points={
-    'console_scripts': [
-      'img_publisher = marrtinorobot2_vision.webcam_pub:main',
-      'img_subscriber = marrtinorobot2_vision.webcam_sub:main',
-      'face_recognition_node = marrtinorobot2_vision.face_recognition_node:main'
-	  'face_tracker_controller = marrtinorobot2_vision.face_tracker_controller:main'
-	
-
-      ],
+        'console_scripts': [
+            'img_publisher = marrtinorobot2_vision.webcam_pub:main',
+            'img_subscriber = marrtinorobot2_vision.webcam_sub:main',
+            'face_recognition_node = marrtinorobot2_vision.face_recognition_node:main',
+            'face_tracker_controller = marrtinorobot2_vision.face_tracker_controller:main',
+        ],
     },
 )

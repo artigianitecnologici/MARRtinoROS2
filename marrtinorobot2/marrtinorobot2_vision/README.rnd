@@ -8,10 +8,15 @@ sudo apt install mpg321
 # install astra camera 
 git clone https://github.com/orbbec/OrbbecSDK_ROS2.git
 
+# install oak camera
+git clone -b humble https://github.com/luxonis/depthai-ros-examples.git && \
+git clone -b humble https://github.com/luxonis/depthai-ros.git
+# lsusb
+Bus 001 Device 008: ID 03e7:2485 Intel Movidius MyriadX
 
 ros2 topic pub  -1 /tts_input std_msgs/msg/String '{data: "tutti i sistemi sono operativi"}'
 
-# install camera
+# install camera webcam
 sudo apt-get install ros-${ROS_DISTRO}-v4l2-camera
 sudo apt install v4l-utils
 # aruko makers Apriltag 36h11

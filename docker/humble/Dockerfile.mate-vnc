@@ -161,7 +161,8 @@ RUN sudo apt-get update -q && \
         ros-humble-joy \
         ros-humble-rplidar-ros \
         ros-humble-joint-state-publisher \  
-    ros-humble-rosbridge-suite  && \
+        ros-humble-pointcloud-to-laserscan \
+        ros-humble-rosbridge-suite  && \
     sudo apt-get autoclean && \
     sudo apt-get autoremove && \
     sudo rm -rf /var/lib/apt/lists/*
@@ -220,6 +221,8 @@ RUN cd /home/ubuntu/marrtinorobot2_ws/src  && \
     ln -s /home/ubuntu/src/m-explore-ros2/explore . && \
     ln -s /home/ubuntu/src/ldlidar_stl_ros2 . && \
     ln -s /home/ubuntu/src/sllidar_ros2 . && \
+    ln -s /home/ubuntu/src/depthai-ros . && \
+    ln -s /home/ubuntu/src/depthai-ros-examples . && \
     ln -s /home/ubuntu/src/vizanti . 
 
 # --- Costruzione del workspace ---

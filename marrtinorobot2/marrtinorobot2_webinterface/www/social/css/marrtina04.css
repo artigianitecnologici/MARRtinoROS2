@@ -50,7 +50,7 @@ body {
 .bulb {
   height: calc(var(--bulb-size) * 1.2);
   width: var(--bulb-size);
-  top: 10%;
+  top: 15%;
   position: relative;
 }
 
@@ -105,7 +105,7 @@ body {
 .mouth {
   height: var(--mouth-height);
   width: var(--mouth-width);
-  bottom: 15%;
+  bottom: 18%;
   left: 40%;
   z-index: 4;
   position: absolute;

@@ -52,7 +52,7 @@
 	// SONAR
 	var sonar0_listener = new ROSLIB.Topic({
       ros: ros,
-      name: 'social/emotion/',
+      name: '/social/emotion',
       messageType: 'std_msgs/String'
   });
 
@@ -125,7 +125,7 @@
 </head>
 
 <body onload="movePupilsRandomly();">
-   <div class="buttons">
+   <!-- <div class="buttons">
     <button onclick="eyes.startBlinking()">Start Blink</button>
     <button onclick="eyes.stopBlinking()">Stop</button>
  	<button onclick="eyes.normal()" >Nor</button>
@@ -138,7 +138,7 @@
 	 <button onclick="eyes.surprise()" >sur</button>
     <button onclick="eyes.confused()" >Conf</button>
 
-  </div>
+  </div> -->
   <div class="face">
     <!-- <div class="eyebrow left">
       <img id="soprdx" src="image/eyebrowsx1.gif" width="80%">
@@ -162,7 +162,7 @@
       <img id="naso" src="image/face04/nosetalkmarrtina3.gif" width="100%">
     </div> -->
     <div class="mouth">
-      <img id="bocca" src="image/face02/boccastabile.png" width="110%">
+      <img id="bocca" src="image/face02/boccastabile.png" width="160%">
     </div>
   </div>
   <script  src="js/marrtina04.js"></script>
