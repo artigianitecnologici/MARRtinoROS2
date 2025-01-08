@@ -130,8 +130,8 @@ chown -R $USER:$USER $HOME/Desktop
 PASSWORD=
 VNC_PASSWORD=
 
-echo "=Disabilita risparmio energetico e screen saver"
-echo "============================================================================================"
+# echo "=Disabilita risparmio energetico e screen saver"
+# echo "============================================================================================"
 
 # gsettings set org.mate.power-manager sleep-display-ac 0
 # gsettings set org.mate.power-manager sleep-display-battery 0
@@ -141,9 +141,9 @@ echo "==========================================================================
 # gsettings set org.mate.power-manager idle-dim-battery false
 # gsettings set org.mate.screensaver idle-activation-enabled false
 # gsettings set org.mate.screensaver lock-enabled false
-# xset s off
-# xset -dpms
-# xset s noblank
+# # xset s off
+# # xset -dpms
+# # xset s noblank
 
 echo "============================================================================================"
 # Define the name of the tmux session

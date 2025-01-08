@@ -194,10 +194,7 @@ RUN source /opt/ros/$ROS_DISTRO/setup.bash \
 ##
 # EOF INSTALLAZIONE MICROROS
 ##
-#RUN echo -e "\033[1;32mInstall Repository MARRtino Robot 2\033[0m"
-    # USER root
-# RUN apt-get update && \
-#     apt-get install -y python3-vcstool build-essential
+RUN echo -e "\033[1;32mInstall Repository MARRtino Robot 2 \033[0m"
 # --- Clona repository ---# Installazione di pacchetti e repository MARRtino
 RUN mkdir -p /home/ubuntu/marrtinorobot2_ws/src && \ 
 mkdir -p /home/ubuntu/src && \
