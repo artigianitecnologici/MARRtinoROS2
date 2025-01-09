@@ -21,12 +21,24 @@ from std_msgs.msg import String
 import subprocess
 import json
 import time
+import logging
 
 class CommandExecutorNode(Node):
     def __init__(self):
         super().__init__('autostart')
+
+        # Configura il logging
+        log_file = '/tmp/execution_log.txt'
+        logging.basicConfig(
+            filename=log_file,
+            level=logging.INFO,
+            format='%(asctime)s - %(levelname)s - %(message)s',
+        )
+        self.logger = logging.getLogger('CommandExecutorNode')
+
         self.publisher = self.create_publisher(String, 'command_output', 10)
         self.get_logger().info('Autostart Node started.')
+        self.logger.info('Autostart Node started.')
 
         # Percorso al file JSON
         json_path = '~/src/marrtinorobot2/marrtinorobot2_webinterface/www/bringup/commands.json'
@@ -35,8 +47,11 @@ class CommandExecutorNode(Node):
         try:
             with open(json_path, 'r') as file:
                 self.commands = json.load(file)
+                self.logger.info(f'Successfully loaded JSON file from {json_path}')
         except Exception as e:
-            self.get_logger().error(f'Error loading JSON file from {json_path}: {str(e)}')
+            error_msg = f'Error loading JSON file from {json_path}: {str(e)}'
+            self.get_logger().error(error_msg)
+            self.logger.error(error_msg)
             self.commands = []
 
         # Esegue i comandi con "selected": true
@@ -50,17 +65,21 @@ class CommandExecutorNode(Node):
                 
                 if start_command:
                     self.get_logger().info(f'Executing startCommand for {title}: {start_command}')
+                    self.logger.info(f'Executing startCommand for {title}: {start_command}')
                     try:
                         result = subprocess.run(start_command, shell=True, capture_output=True, text=True)
                         output = result.stdout + result.stderr
+                        self.logger.info(f'Successfully executed command for {title}. Output: {output}')
                     except Exception as e:
                         output = f'Error executing {title}: {str(e)}'
+                        self.logger.error(output)
 
                     # Pubblica l'output del comando
                     output_msg = String()
                     output_msg.data = f'[{title}] {output}'
                     self.publisher.publish(output_msg)
                     self.get_logger().info(f'Output for {title}: {output}')
+                    self.logger.info(f'Output for {title}: {output}')
 
                     # Pausa tra un comando e l'altro
                     time.sleep(2)
@@ -69,9 +88,12 @@ class CommandExecutorNode(Node):
 def main(args=None):
     rclpy.init(args=args)
     node = CommandExecutorNode()
-    rclpy.spin(node)
-    node.destroy_node()
-    rclpy.shutdown()
+    try:
+        rclpy.spin(node)
+    finally:
+        node.destroy_node()
+        rclpy.shutdown()
+
 
 if __name__ == '__main__':
     main()

@@ -5,15 +5,15 @@
         "stopCommand": "bringup_kill",
         "selected": true,
         "description": "Starts the main bringup process.",
-        "monitor": true
+        "monitor": false
     },
     {
         "title": "MicroROS",
         "startCommand": "microros_start",
         "stopCommand": "microros_kill",
-        "selected": true,
+        "selected": false,
         "description": "Manages the MicroROS processes.",
-        "monitor": true
+        "monitor": false
     },
     {
         "title": "WebCam",
@@ -27,7 +27,7 @@
         "title": "TTS",
         "startCommand": "tts.sh",
         "stopCommand": "tts_kill",
-        "selected": false,
+        "selected": true,
         "description": "Starts the Text-to-Speech service.",
         "monitor": false
     },
