@@ -13,16 +13,21 @@ class GestureNode(Node):
 
         # Topic definitions
         self.TOPIC_emotion = "social/emotion"
-        self.TOPIC_speech = "social/speech/to_speak"
+        self.TOPIC_speech = "speech/to_speak"
         self.TOPIC_pan = "pan_controller/command"
         self.TOPIC_tilt = "tilt_controller/command"
+        self.TOPIC_right_arm = "right_arm_controller/command"
+        self.TOPIC_left_arm = "left_arm_controller/command"
         self.TOPIC_gesture = "/social/gesture"
+
 
         # Publisher definitions
         self.emotion_pub = self.create_publisher(String, self.TOPIC_emotion, 10)
         self.speech_pub = self.create_publisher(String, self.TOPIC_speech, 10)
         self.pan_pub = self.create_publisher(Float64, self.TOPIC_pan, 10)
         self.tilt_pub = self.create_publisher(Float64, self.TOPIC_tilt, 10)
+        self.left_arm_pub = self.create_publisher(Float64, self.TOPIC_left_arm, 10)
+        self.right_arm_pub = self.create_publisher(Float64, self.TOPIC_right_arm, 10)
 
         # Declare parameters
         self.declare_parameter("face_reset_timer", 5)
@@ -60,26 +65,49 @@ class GestureNode(Node):
         message.data = msg
         self.tilt_pub.publish(message)
 
+    def left_arm(self, msg):
+        self.get_logger().info(f'Left Arm Position: {msg}')
+        message = Float64()
+        message.data = msg
+        self.left_arm_pub.publish(message)
+
+    def right_arm(self, msg):
+        self.get_logger().info(f'right Arm Position: {msg}')
+        message = Float64()
+        message.data = msg
+        self.right_arm_pub.publish(message)
+
     def head_position(self, msg):
         self.get_logger().info(f'Head Position: {msg}')
         if msg == 'front':
             self.pan(0)
             self.tilt(0)
         elif msg == 'left':
-            self.pan(0.5)
+            self.pan(30)
             self.tilt(0)
         elif msg == 'right':
-            self.pan(-0.5)
+            self.pan(-30)
             self.tilt(0)
         elif msg == 'up':
             self.pan(0)
-            self.tilt(-0.5)
+            self.tilt(-30)
         elif msg == 'down':
             self.pan(0)
-            self.tilt(0.5)
+            self.tilt(30)
 
     def reset_gesture(self):
         self.get_logger().info("Resetting gesture animation")
+
+    def gesture_init(self):
+        self.head_position('front')
+        self.left_arm(30)
+        self.right_arm(-30)
+
+    def gesture_zero(self):
+        self.head_position('front')
+        self.left_arm(0)
+        self.right_arm(0)
+
 
     def callback_gesture(self, data):
         gesture = data.data
