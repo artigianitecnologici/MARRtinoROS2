@@ -162,7 +162,7 @@ RUN sudo apt-get update -q && \
         ros-humble-rplidar-ros \
         ros-humble-joint-state-publisher \  
         ros-humble-pointcloud-to-laserscan \
-        ros-humble-rosbridge-suite  && \
+        ros-humble-rosbridge-suite  \
         ros-humble-controller-manager && \
     sudo apt-get autoclean && \
     sudo apt-get autoremove && \
