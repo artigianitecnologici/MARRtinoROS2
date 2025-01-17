@@ -46,3 +46,16 @@ sudo apt-get install ros-humble-webviz
 
 -To use the the calibration file unzip the calibration.tar.gz
 tar -xvf calibration.tar.gz
+
+
+#
+ros2 launch depthai_examples stereo_inertial_node.launch.py
+
+conf minima
+ros2 launch depthai_examples stereo.launch.py
+
+
+ros2 run pointcloud_to_laserscan pointcloud_to_laserscan_node \
+    --ros-args --params-file ~/marrtinorobot2_ws/src/marrtinorobot2_vision/config/pointcloud_to_laserscan_qos.yaml
+
+    ~/marrtinorobot2_ws/src/marrtinorobot2_vision/config
