@@ -64,7 +64,7 @@ if [ $? != 0 ]; then
   #tmux send-keys -t $SESSION:4 "python3 autostart.py >" C-m  # Log output to robot_bringup.log
   # sleep 5
   tmux send-keys -t $SESSION:5 "cd \$MARRTINO_APPS_HOME/blockly" C-m
-  tmux send-keys -t $SESSION:5 "python websocket_robot.py > /tmp/websocket_robot.log 2>&1 &" C-m  # Log to websocket_robot.log
+  tmux send-keys -t $SESSION:5 "python websocket_robot.py " C-m  # Log to websocket_robot.log
 
   tmux send-keys -t $SESSION:6 "cd \$MARRTINOROBOT2_WS" C-m
   tmux send-keys -t $SESSION:6 "./tts.sh " C-m  # Log output to cmdexe.lo
