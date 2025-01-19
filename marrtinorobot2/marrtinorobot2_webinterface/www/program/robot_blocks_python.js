@@ -1,37 +1,37 @@
 // Python code generation
 
 Blockly.Python['begin'] = function(block) {
-  var code = '# Generate with blockly \nbegin()\n';
+  var code = '# Generate with blockly \nrobot.begin()\n';
   return code;
 };
 
 Blockly.Python['end'] = function(block) {
-  var code = 'end()\n';
+  var code = 'robot.end()\n';
   return code;
 };
 
 
 Blockly.Python['forward'] = function(block) {
   var value_steps = Blockly.Python.valueToCode(block, 'steps', Blockly.Python.ORDER_ATOMIC);
-  var code = 'forward('+value_steps+')\n';
+  var code = 'robot.forward('+value_steps+')\n';
   return code;
 };
 
 Blockly.Python['backward'] = function(block) {
   var value_steps = Blockly.Python.valueToCode(block, 'steps', Blockly.Python.ORDER_ATOMIC);
-  var code = 'backward('+value_steps+')\n';
+  var code = 'robot.backward('+value_steps+')\n';
   return code;
 };
 
 Blockly.Python['left'] = function(block) {
   var value_steps = Blockly.Python.valueToCode(block, 'steps', Blockly.Python.ORDER_ATOMIC);
-  var code = 'left('+value_steps+')\n';
+  var code = 'robot.left('+value_steps+')\n';
   return code;
 };
 
 Blockly.Python['right'] = function(block) {
   var value_steps = Blockly.Python.valueToCode(block, 'steps', Blockly.Python.ORDER_ATOMIC);
-  var code = 'right('+value_steps+')\n';
+  var code = 'robot.right('+value_steps+')\n';
   return code;
 };
 
@@ -104,7 +104,7 @@ Blockly.Python['display'] = function(block) {
 Blockly.Python['say'] = function(block) {
   var value_text = Blockly.Python.valueToCode(block, 'text', Blockly.Python.ORDER_ATOMIC);
   var value_lang = Blockly.Python.valueToCode(block, 'lang', Blockly.Python.ORDER_ATOMIC);
-  var code = 'say('+value_text+','+value_lang+')\n';
+  var code = 'robot.say('+value_text+','+value_lang+')\n';
   return code;
 };
 
@@ -118,28 +118,28 @@ Blockly.Python['sound'] = function(block) {
 Blockly.Python['face'] = function(block) {
   var dropdown_emotion = block.getFieldValue('EMOTION');
   // TODO: Assemble Python into code variable.
-  var code = 'emotion("'+dropdown_emotion+'")\n';
+  var code = 'robot.emotion("'+dropdown_emotion+'")\n';
   return code;
 }
 
 Blockly.Python['status'] = function(block) {
   var dropdown_status = block.getFieldValue('STATUS');
   // TODO: Assemble Python into code variable.
-  var code = 'emotion("'+dropdown_status+'")\n';
+  var code = 'robot.emotion("'+dropdown_status+'")\n';
   return code;
 }
 
 Blockly.Python['gesture'] = function(block) {
   var dropdown_position = block.getFieldValue('ROBOT_GESTURE');
   // TODO: Assemble Python into code variable.
-  var code = 'gesture("'+dropdown_position+'")\n';
+  var code = 'robot.gesture("'+dropdown_position+'")\n';
   return code;
 }
 
 Blockly.Python['head_position'] = function(block) {
   var dropdown_position = block.getFieldValue('HEAD_POSITION');
   // TODO: Assemble Python into code variable.
-  var code = 'head_position("'+dropdown_position+'")\n';
+  var code = 'robot.head_position("'+dropdown_position+'")\n';
   return code;
 }
 
@@ -163,7 +163,7 @@ Blockly.Python['pan'] = function(block) {
     value_steps = -value_steps;
   }
   var value_pos = (value_steps); // / 100) -0.5;
-  var code = 'pan('+value_pos+')\n';
+  var code = 'robot.pan('+value_pos+')\n';
   return code;
 };
 
@@ -174,7 +174,7 @@ Blockly.Python['tilt'] = function(block) {
     value_steps = -value_steps;
   }
   var value_pos = (value_steps / 100) -0.5 * -1;
-  var code = 'tilt('+value_pos+')\n';
+  var code = 'robot.tilt('+value_pos+')\n';
   return code;
 };
 

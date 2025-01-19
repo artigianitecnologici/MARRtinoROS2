@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+#
 # Copyright 2025 robotics-3d.com 
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,13 +16,13 @@
 #
 # Author: Ferrarini Fabio
 # Email : ferrarini09@gmail.com
-#
-#!/usr/bin/env python3
+# File  : websocket_robot.py
 
 import rclpy
 
 import os
 import time
+import asyncio
 from datetime import datetime
 from threading import Thread
 import tornado.httpserver
@@ -28,7 +30,8 @@ import tornado.websocket
 import tornado.ioloop
 import tornado.web
 
-from robot_cmd_ros import RobotCmdROS
+from robot_cmd_ros import RobotCmdROS  # Importa la libreria
+
 
 # Global variables
 websocket_server = None  # WebSocket handler
@@ -82,8 +85,21 @@ def display(text):
         except tornado.websocket.WebSocketClosedError:
             print('Cannot write to closed WebSocket')
 
+# def main_loop():
+#     global run, status
+#     while run:
+#         time.sleep(1)
+#         for ws in list_ws:
+#             try:
+#                 ws.write_message(status)
+#             except tornado.websocket.WebSocketClosedError:
+#                 pass
+
+
+
 def main_loop():
     global run, status
+    asyncio.set_event_loop(asyncio.new_event_loop())  # Crea un nuovo ciclo eventi per questo thread
     while run:
         time.sleep(1)
         for ws in list_ws:
@@ -92,42 +108,95 @@ def main_loop():
             except tornado.websocket.WebSocketClosedError:
                 pass
 
+
 fncode_running = False
+
+
+
+# def deffunctioncode(code):
+#     r = "def fncode():\n"
+#     r += "  robot.begin()\n"
+#     for line in code.splitlines():
+#         line = line.strip()
+#         if line and not line.startswith(('begin', 'end')):  # Ignora 'begin()' e 'end()'
+#             r += f"  robot.{line}\n"  # Prefissa 'robot.' a ogni comando
+#     r += "  robot.end()\n"
+#     return r
 
 def deffunctioncode(code):
     r = "def fncode():\n"
     r += "  robot.begin()\n"
     for line in code.splitlines():
-        if not line.strip().startswith(('begin', 'end')):
-            r += f"  {line}\n"
+        line = line.strip()
+        if line and not line.startswith("#"):  # Ignora i commenti
+            r += f"  {line}\n"  
+            
     r += "  robot.end()\n"
+    print("Generated function code:\n", r)  # Log del codice generato
     return r
 
-def fncodeexcept():
+
+
+# def fncodeexcept():
+#     global fncode_running
+#     fncode_running = True
+#     try:
+#         fncode()
+#     except Exception as e:
+#         print(f"CODE EXECUTION ERROR: {e}")
+#         display(str(e))
+#     fncode_running = False
+
+def fncodeexcept(local_context):
     global fncode_running
     fncode_running = True
     try:
-        fncode()
+        local_context['fncode']()
     except Exception as e:
         print(f"CODE EXECUTION ERROR: {e}")
         display(str(e))
     fncode_running = False
 
+# def exec_thread(code):
+#     global fncode_running, robot
+#     fncodestr = deffunctioncode(code)
+#     try:
+#         print("Executing with context:", {'robot': robot})
+#         exec(fncodestr, {'robot': robot})  # Passa l'oggetto robot come parte del contesto
+#     except Exception as e:
+#         print(f"FN CODE DEFINITION ERROR: {e}")
+#         display(str(e))
+#         return
+
+#     thread = Thread(target=fncodeexcept)
+#     thread.start()
+#     while fncode_running and status != "Stop":
+#         time.sleep(0.5)
+#     thread.join()
+
 def exec_thread(code):
-    global fncode_running
+    global fncode_running, robot
     fncodestr = deffunctioncode(code)
+    local_context = {'robot': robot}
     try:
-        exec(fncodestr, globals())
+        print("Executing with context:", local_context)
+        exec(fncodestr, globals(), local_context)  # Passa il contesto globale e locale
     except Exception as e:
         print(f"FN CODE DEFINITION ERROR: {e}")
         display(str(e))
         return
 
-    thread = Thread(target=fncodeexcept)
+    # Assicurati che la funzione fncode esista
+    if 'fncode' not in local_context:
+        print("ERROR: fncode not defined")
+        return
+
+    thread = Thread(target=fncodeexcept, args=(local_context,))
     thread.start()
     while fncode_running and status != "Stop":
         time.sleep(0.5)
     thread.join()
+
 
 def save_program(code):
     try:

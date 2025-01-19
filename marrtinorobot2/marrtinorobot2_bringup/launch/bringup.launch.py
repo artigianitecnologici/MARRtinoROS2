@@ -54,6 +54,11 @@ def generate_launch_description():
     rplidar_robot_launch_path = PathJoinSubstitution(
         [FindPackageShare('marrtinorobot2_bringup'), 'launch', 'rplidar.launch.py']
     )
+    
+    rplidar_c1_robot_launch_path = PathJoinSubstitution(
+        [FindPackageShare('marrtinorobot2_bringup'), 'launch', 'rplidar_c1.launch.py']
+    )
+
 
     return LaunchDescription([
         # Declare Launch Arguments
@@ -87,9 +92,14 @@ def generate_launch_description():
             description='Condition to launch LIDAR node'
         ),
         DeclareLaunchArgument(
+            name='use_rplidar_c1',
+            default_value='false',
+            description='Condition to launch RPLIDAR C1 node'
+        ),
+        DeclareLaunchArgument(
             name='use_rplidar',
             default_value='false',
-            description='Condition to launch LIDAR node'
+            description='Condition to launch RPLIDAR node'
         ),
 
 
@@ -136,7 +146,12 @@ def generate_launch_description():
             PythonLaunchDescriptionSource(ldlidar_robot_launch_path),
             condition=IfCondition(LaunchConfiguration('use_ldlidar'))
         ),
-        # Include LIDAR Node Launch (conditional)
+        # Include RPLIDAR C1 Node Launch (conditional)
+        IncludeLaunchDescription(
+            PythonLaunchDescriptionSource(rplidar_c1_robot_launch_path),
+            condition=IfCondition(LaunchConfiguration('use_rplidar_c1'))
+        ),
+        # Include RPLIDAR Node Launch (conditional)
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource(rplidar_robot_launch_path),
             condition=IfCondition(LaunchConfiguration('use_rplidar'))
