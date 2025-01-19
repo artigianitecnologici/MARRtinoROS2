@@ -49,15 +49,15 @@ if [ $? != 0 ]; then
 
   # Commands to be executed in window 1
   tmux send-keys -t $SESSION:1 "cd \$MARRTINOROBOT2_WS" C-m
-  tmux send-keys -t $SESSION:1 "./rosbridge.sh " C-m  # Log output to cmdexe.lo
+  #tmux send-keys -t $SESSION:1 "./rosbridge.sh " C-m  # Log output to cmdexe.lo
 
   # Commands to be executed in window 2 
   tmux send-keys -t $SESSION:2 "cd ~/src/marrtinorobot2/marrtinorobot2_webinterface/marrtinorobot2_webinterface" C-m
-  tmux send-keys -t $SESSION:2 "python3 command_executor.py " C-m  # Log output to cmdexe.log
+  #tmux send-keys -t $SESSION:2 "python3 command_executor.py " C-m  # Log output to cmdexe.log
 
   # Commands to be executed in window 3 ('robot_bringup')
   tmux send-keys -t $SESSION:3 "cd ~/src/marrtinorobot2/marrtinorobot2_webinterface/marrtinorobot2_webinterface" C-m
-  tmux send-keys -t $SESSION:3 "python3 robot_bringup.py " C-m  # Log output to robot_bringup.log
+  #tmux send-keys -t $SESSION:3 "python3 robot_bringup.py " C-m  # Log output to robot_bringup.log
 
   # Commands to be executed in window 4 ('robot_bringup')
   tmux send-keys -t $SESSION:4 "cd ~/src/marrtinorobot2/bringup" C-m
