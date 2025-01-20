@@ -12,6 +12,7 @@ class DynamixelController(Node):
         self.baudrate = 1000000
         self.pan_motor_id = 1
         self.tilt_motor_id = 2
+        
         self.init_dynamixel()
 
     def init_dynamixel(self):

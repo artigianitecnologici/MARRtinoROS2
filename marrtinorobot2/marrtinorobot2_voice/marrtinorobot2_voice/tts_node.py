@@ -38,8 +38,7 @@ class TTSNode(Node):
 
     def language_callback(self, msg):
         # Update the language based on received message
-        # Convert the language setting to Unicode
-        self.language = msg.data.decode('utf-8')
+        self.language = msg.data
         self.get_logger().info(f'Language set to: {self.language}')
 
     def tts_callback(self, msg):

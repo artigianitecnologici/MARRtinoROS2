@@ -45,7 +45,9 @@ if [ $? != 0 ]; then
   CMD_EXE_LOG="/tmp/cmdexe.log"
   ROBOT_BRINGUP_LOG="/tmp/robot_bringup.log"
   AUTOSTART_LOG="/tmp/autostart.log"
-
+  # Commands to be executed in window 1
+  tmux send-keys -t $SESSION:0 "cd \$MARRTINOROBOT2_WS" C-m
+  tmux send-keys -t $SESSION:0 "./bringup.sh " C-m  # 
 
   # Commands to be executed in window 1
   tmux send-keys -t $SESSION:1 "cd \$MARRTINOROBOT2_WS" C-m

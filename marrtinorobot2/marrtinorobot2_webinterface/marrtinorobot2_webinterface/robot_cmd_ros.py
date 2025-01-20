@@ -16,7 +16,7 @@
 #
 # Author: Ferrarini Fabio
 # Email : ferrarini09@gmail.com
-# File  : robot_cmd_ros.py
+# File  : robot_cmd_ros.py 
 
 import rclpy
 from rclpy.node import Node
@@ -32,6 +32,7 @@ class RobotCmdROS(Node):
         self.TOPIC_emotion = "social/emotion"
         self.TOPIC_gesture = "social/gesture"
         self.TOPIC_speech = "speech/to_speak"
+        self.TOPIC_language = "speech/language"
         self.TOPIC_cmdvel = "cmd_vel"
         self.TOPIC_pan = "pan_controller/command"
         self.TOPIC_tilt = "tilt_controller/command"
@@ -42,8 +43,12 @@ class RobotCmdROS(Node):
         self.emotion_pub = self.create_publisher(String, self.TOPIC_emotion, 10)
         self.gesture_pub = self.create_publisher(String, self.TOPIC_gesture, 10)
         self.speech_pub = self.create_publisher(String, self.TOPIC_speech, 10)
+        self.language_pub = self.create_publisher(String, self.TOPIC_language, 10)
         self.cmd_vel_pub = self.create_publisher(Twist, self.TOPIC_cmdvel, 10)
-        #self.cmd_vel_pub = self.create_publisher(Twist, '/cmd_vel', 10)
+        self.pan_pub = self.create_publisher(Float64, self.TOPIC_pan, 10)
+        self.tilt_pub = self.create_publisher(Float64, self.TOPIC_tilt, 10)
+        self.right_arm_pub = self.create_publisher(Float64, self.TOPIC_right_arm, 10)
+        self.left_arm_pub = self.create_publisher(Float64, self.TOPIC_left_arm, 10)
         self.get_logger().info('RobotCmdROS initialized')
 
     def begin(self):
@@ -126,8 +131,12 @@ class RobotCmdROS(Node):
         self.gesture_pub.publish(message)
        
 
-    def say(self, msg):
+    def say(self, msg,language):
         self.get_logger().info(f'speech: {msg}')
+        self.get_logger().info(f'languahe: {language}')
+        message = String()
+        message.data = language
+        self.language_pub.publish(message)
         message = String()
         message.data = msg
         self.speech_pub.publish(message)
@@ -137,3 +146,45 @@ class RobotCmdROS(Node):
         message = String()
         message.data = msg
         self.emotion_pub.publish(message)
+
+    def pan(self, msg):
+        self.get_logger().info(f'Pan Position: {msg}')
+        message = Float64()
+        message.data = float(msg)
+        self.pan_pub.publish(message)
+
+    def tilt(self, msg):
+        self.get_logger().info(f'Tilt Position: {msg}')
+        message = Float64()
+        message.data = float(msg)
+        self.tilt_pub.publish(message)
+
+    def left_arm(self, msg):
+        self.get_logger().info(f'Left Arm Position: {msg}')
+        message = Float64()
+        message.data = float(msg)
+        self.left_arm_pub.publish(message)
+
+    def right_arm(self, msg):
+        self.get_logger().info(f'right Arm Position: {msg}')
+        message = Float64()
+        message.data = float(msg)
+        self.right_arm_pub.publish(message)
+
+    def head_position(self, msg):
+        self.get_logger().info(f'Head Position: {msg}')
+        if msg == 'front':
+            self.pan(0)
+            self.tilt(0)
+        elif msg == 'left':
+            self.pan(30)
+            self.tilt(0)
+        elif msg == 'right':
+            self.pan(-30)
+            self.tilt(0)
+        elif msg == 'up':
+            self.pan(0)
+            self.tilt(-30)
+        elif msg == 'down':
+            self.pan(0)
+            self.tilt(30)
