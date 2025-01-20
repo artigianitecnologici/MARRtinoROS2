@@ -1,5 +1,5 @@
 #!/bin/bash
-
+ 
 # Definizione della sessione tmux
 SESSION=init
 
