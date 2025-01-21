@@ -1,5 +1,5 @@
 #!/bin/bash
- 
+
 # Definizione della sessione tmux
 SESSION=init
 
@@ -30,13 +30,14 @@ if [ $? != 0 ]; then
   tmux rename-window -t $SESSION:0 'config'  # Window 0 is renamed to 'config'
   tmux new-window -t $SESSION:1 -n 'rosbridge'  # Window 1 named 'docker'
   tmux new-window -t $SESSION:2 -n 'webi'  # Window 2 named 'cmdexe'
-  tmux new-window -t $SESSION:3 -n 'dynamixel'   
-  tmux new-window -t $SESSION:4 -n 'autostart'  
+  tmux new-window -t $SESSION:3 -n 'robot_bringup'  # Window 3 named 'robot_bringup'
+  tmux new-window -t $SESSION:4 -n 'autostart'  # Window 3 named 'robot_bringup'
+  tmux new-window -t $SESSION:5 -n 'blockly'
   tmux new-window -t $SESSION:6 -n 'tts'
   tmux new-window -t $SESSION:7 -n 'rplidar'
   tmux new-window -t $SESSION:9 -n 'slam'
-  tmux new-window -t $SESSION:10 -n 'navigation'
-  tmux new-window -t $SESSION:11 -n 'explorer'
+  tmux new-window -t $SESSION:10 -n 'sample1'
+  tmux new-window -t $SESSION:11 -n 'sample2'
   tmux new-window -t $SESSION:12 -n 'sample3'
 
 
@@ -55,7 +56,7 @@ if [ $? != 0 ]; then
   #tmux send-keys -t $SESSION:2 "python3 command_executor.py " C-m  # Log output to cmdexe.log
 
   # Commands to be executed in window 3 ('robot_bringup')
-  tmux send-keys -t $SESSION:3 "cd ~/src/marrtinorobot2/marrtinorobot2_dynamixel/marrtinorobot2_dynamixel" C-m
+  tmux send-keys -t $SESSION:3 "cd ~/src/marrtinorobot2/marrtinorobot2_webinterface/marrtinorobot2_webinterface" C-m
   #tmux send-keys -t $SESSION:3 "python3 robot_bringup.py " C-m  # Log output to robot_bringup.log
 
   # Commands to be executed in window 4 ('robot_bringup')

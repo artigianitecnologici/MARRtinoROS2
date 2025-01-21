@@ -1,6 +1,5 @@
-version: "3.9"
-
 services:
+
   webgui:
     image: nginx:alpine
     container_name: nginx_humble
@@ -30,7 +29,7 @@ services:
     image: marrtinorobot2:mate-vnc
     container_name: Dockerfile.mate-vnc
     ports:
-      - "8085:8085" # VNC
+      - "8085:8085" # vnc
       - "9090:9090"
       - "9326:9326"
       - "9913:9913"
@@ -52,7 +51,7 @@ services:
     stdin_open: true
     restart: always
 
+
 networks:
   web_network:
-    name: web_network
     driver: bridge
