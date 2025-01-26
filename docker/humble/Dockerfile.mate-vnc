@@ -31,7 +31,6 @@ ARG INSTALL_PACKAGE=desktop
 
 #
 LABEL maintainer="ferrarini09@gmail.com>"
-
 SHELL ["/bin/bash", "-c"]
 
 # Upgrade OS
@@ -228,10 +227,6 @@ WORKDIR /home/ubuntu/marrtinorobot2_ws
 
 # RUN apt-get update && apt-get install -y software-properties-common && \
 #     add-apt-repository universe && apt-get update
-
-
-
-
  
 # --- Costruzione del workspace ---
 WORKDIR /home/ubuntu/marrtinorobot2_ws
