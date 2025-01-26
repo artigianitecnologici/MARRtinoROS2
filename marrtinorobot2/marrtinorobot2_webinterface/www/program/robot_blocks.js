@@ -101,42 +101,42 @@ Blockly.Blocks['wait'] = {
   }
 };
 
-Blockly.Blocks['turn'] = {
-  init: function() {
-    /*this.appendDummyInput().appendField(new Blockly.FieldImage("img/rotright.png", 20, 20, "Turn"));*/
-    this.appendValueInput("degrees")
-        .setCheck("Number")
-        .appendField("turn");
-    this.setInputsInline(true);
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
-    this.setColour(120);
- this.setTooltip("robot turns [angle in degrees]");
- this.setHelpUrl("");
-  }
-};
+// Blockly.Blocks['turn'] = {
+//   init: function() {
+//     /*this.appendDummyInput().appendField(new Blockly.FieldImage("img/rotright.png", 20, 20, "Turn"));*/
+//     this.appendValueInput("degrees")
+//         .setCheck("Number")
+//         .appendField("turn");
+//     this.setInputsInline(true);
+//     this.setPreviousStatement(true, null);
+//     this.setNextStatement(true, null);
+//     this.setColour(120);
+//  this.setTooltip("robot turns [angle in degrees]");
+//  this.setHelpUrl("");
+//   }
+// };
 
-Blockly.Blocks['setSpeed'] = {
-  init: function() {
-    this.appendDummyInput()
-        .appendField("setSpeed");
-    this.appendValueInput("tv")
-        .setCheck("Number")
-        .appendField("tv");
-    this.appendValueInput("rv")
-        .setCheck("Number")
-        .appendField("rv");
-    this.appendValueInput("time")
-        .setCheck("Number")
-        .appendField("time");
-    this.setInputsInline(true);
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
-    this.setColour(120);
- this.setTooltip("robot speed tv [m/s], rv [rad/s] for time seconds");
- this.setHelpUrl("");
-  }
-};
+// Blockly.Blocks['setSpeed'] = {
+//   init: function() {
+//     this.appendDummyInput()
+//         .appendField("setSpeed");
+//     this.appendValueInput("tv")
+//         .setCheck("Number")
+//         .appendField("tv");
+//     this.appendValueInput("rv")
+//         .setCheck("Number")
+//         .appendField("rv");
+//     this.appendValueInput("time")
+//         .setCheck("Number")
+//         .appendField("time");
+//     this.setInputsInline(true);
+//     this.setPreviousStatement(true, null);
+//     this.setNextStatement(true, null);
+//     this.setColour(120);
+//  this.setTooltip("robot speed tv [m/s], rv [rad/s] for time seconds");
+//  this.setHelpUrl("");
+//   }
+// };
 
 
 Blockly.Blocks['get_pose'] = {
@@ -546,58 +546,58 @@ Blockly.Blocks['hand_left'] = {
   }
 };
 
-Blockly.Blocks['wait_user_say'] = {
-  init: function() {
-    this.appendDummyInput()
-        .appendField("wait_user_say()");
-    this.setOutput(true, null);
-    this.setColour(0);
- this.setTooltip("returns the user say - wait 10 sec");
- this.setHelpUrl("");
-  }
-};
+// Blockly.Blocks['wait_user_say'] = {
+//   init: function() {
+//     this.appendDummyInput()
+//         .appendField("wait_user_say()");
+//     this.setOutput(true, null);
+//     this.setColour(0);
+//  this.setTooltip("returns the user say - wait 10 sec");
+//  this.setHelpUrl("");
+//   }
+// };
 
 
-Blockly.Blocks['user_say'] = {
-  init: function() {
-    this.appendDummyInput()
-        .appendField("user_say()");
-    this.setOutput(true, null);
-    this.setColour(0);
- this.setTooltip("returns the user say");
- this.setHelpUrl("");
-  }
-};
-
-
-
-Blockly.Blocks['clear-asr'] = {
-  init: function() {
-    this.appendDummyInput()
-        .appendField("clear-asr")
-     //   .appendField(new Blockly.FieldDropdown([["clear","inclearit"],["zero","zero"],["hello","hello"], ["left","left"],["right","right"]]), "ROBOT_GESTURE");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
-    this.setColour(230);
- this.setTooltip("clear-asr");
- this.setHelpUrl("");
-  }
-};
+// Blockly.Blocks['user_say'] = {
+//   init: function() {
+//     this.appendDummyInput()
+//         .appendField("user_say()");
+//     this.setOutput(true, null);
+//     this.setColour(0);
+//  this.setTooltip("returns the user say");
+//  this.setHelpUrl("");
+//   }
+// };
 
 
 
+// Blockly.Blocks['clear-asr'] = {
+//   init: function() {
+//     this.appendDummyInput()
+//         .appendField("clear-asr")
+//      //   .appendField(new Blockly.FieldDropdown([["clear","inclearit"],["zero","zero"],["hello","hello"], ["left","left"],["right","right"]]), "ROBOT_GESTURE");
+//     this.setPreviousStatement(true, null);
+//     this.setNextStatement(true, null);
+//     this.setColour(230);
+//  this.setTooltip("clear-asr");
+//  this.setHelpUrl("");
+//   }
+// };
 
-Blockly.Blocks['ask_chatgpt'] = {
-  init: function() {
-    this.appendDummyInput().appendField("ask_chatgpt");
-    this.appendValueInput("text");
-    this.setInputsInline(true);
-    this.setOutput(true, null);
-    this.setColour(0);
- this.setTooltip("type ask to chatgpt");
- this.setHelpUrl("");
-  }
-};
+
+
+
+// Blockly.Blocks['ask_chatgpt'] = {
+//   init: function() {
+//     this.appendDummyInput().appendField("ask_chatgpt");
+//     this.appendValueInput("text");
+//     this.setInputsInline(true);
+//     this.setOutput(true, null);
+//     this.setColour(0);
+//  this.setTooltip("type ask to chatgpt");
+//  this.setHelpUrl("");
+//   }
+// };
 
 Blockly.Blocks['tag_trigger'] = {
   init: function() {
