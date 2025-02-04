@@ -41,19 +41,19 @@ Blockly.Python['wait'] = function(block) {
   return code;
 };
 
-// Blockly.Python['turn'] = function(block) {
-//   var value_deg = Blockly.Python.valueToCode(block, 'degrees', Blockly.Python.ORDER_ATOMIC);
-//   var code = 'turn('+value_deg+')\n';
-//   return code;
-// };
+Blockly.Python['turn'] = function(block) {
+  var value_deg = Blockly.Python.valueToCode(block, 'degrees', Blockly.Python.ORDER_ATOMIC);
+  var code = 'turn('+value_deg+')\n';
+  return code;
+};
 
-// Blockly.Python['setSpeed'] = function(block) {
-//   var value_tv = Blockly.Python.valueToCode(block, 'tv', Blockly.Python.ORDER_ATOMIC);
-//   var value_rv = Blockly.Python.valueToCode(block, 'rv', Blockly.Python.ORDER_ATOMIC);
-//   var value_time = Blockly.Python.valueToCode(block, 'time', Blockly.Python.ORDER_ATOMIC);
-//   var code = 'setSpeed('+value_tv+','+value_rv+','+value_time+',False)\n';
-//   return code;
-// };
+Blockly.Python['setSpeed'] = function(block) {
+  var value_tv = Blockly.Python.valueToCode(block, 'tv', Blockly.Python.ORDER_ATOMIC);
+  var value_rv = Blockly.Python.valueToCode(block, 'rv', Blockly.Python.ORDER_ATOMIC);
+  var value_time = Blockly.Python.valueToCode(block, 'time', Blockly.Python.ORDER_ATOMIC);
+  var code = 'setSpeed('+value_tv+','+value_rv+','+value_time+',False)\n';
+  return code;
+};
 
 
 Blockly.Python['get_pose'] = function(block) {

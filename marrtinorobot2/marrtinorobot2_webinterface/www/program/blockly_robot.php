@@ -107,13 +107,13 @@
     </block>
   </value>
 </block>
-<block type="turn">
+<!-- <block type="turn">
   <value name="degrees">
     <block type="math_number">
       <field name="NUM">90</field>
     </block>
   </value>
-</block>
+</block> -->
 <block type="wait">
   <value name="seconds">
     <block type="math_number">
@@ -121,7 +121,7 @@
     </block>
   </value>
 </block>
-<block type="setSpeed">
+<!-- <block type="setSpeed">
   <value name="tv">
     <block type="math_number">
       <field name="NUM">0.0</field>
@@ -137,16 +137,16 @@
       <field name="NUM">0.1</field>
     </block>
   </value>
-</block>
+</block> -->
 
 </category>
 
-<category colour="0" name="Sensors">
+<!-- <category colour="0" name="Sensors">
 
 <block type="obstacle_distance"></block>
 <block type="get_pose"></block>
 
-</category>
+</category> -->
 <category colour="120" name="Social">
 <block type="gesture"> </block>
 <block type="head_position"> </block>
@@ -163,7 +163,7 @@
 <block type="pan"> </block>
 <block type="tilt"> </block>
 
-<block type="get_nro_of_face"></block>
+<!-- <block type="get_nro_of_face"></block> -->
 </category>
 <category colour="0" name="Code">
  <!-- 
@@ -175,7 +175,7 @@
   </value>
 </block> -->
 
-<block type="ask_chatgpt">
+<!-- <block type="ask_chatgpt">
   <value name="text">
     <block type="text">
       <field name="TEXT">your question</field>
@@ -184,7 +184,7 @@
 </block>
 <block type="user_say"></block>
 <block type="wait_user_say"></block>
-<block type="clear-asr"></block>
+<block type="clear-asr"></block> -->
 <block type="run_python">
 
    <value name="text">
@@ -220,25 +220,27 @@
     </block>
   </value>
 </block>
-<block type="sound">
+<!-- <block type="sound">
   <value name="name">
     <block type="text">
       <field name="TEXT">bip</field>
     </block>
   </value>
-</block>
+</block> -->
 
 </category>
 
 <category colour="60" name="Vision">
-   <block type="tag_trigger"></block>
-   <block type="tag_id"></block>
-   <block type="tag_distance"></block>
-   <block type="tag_angle"></block>
+
    <block type="get_image"></block>
    <block type="face_detection"></block>
 </category>
-
+<category colour="60" name="Tag">
+<block type="tag_trigger"></block>
+   <block type="tag_id"></block>
+   <block type="tag_distance"></block>
+   <block type="tag_angle"></block>
+</category>
 <category colour="200" name="Controls">
 
 <block type="controls_if"></block>
@@ -263,7 +265,7 @@
 
 <block type="distance"></block>
 
-<block type="marrtino_ok"></block>
+<!-- <block type="marrtino_ok"></block> -->
 
 <block type="random">
   <value name="min">

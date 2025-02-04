@@ -12,10 +12,10 @@ def generate_launch_description():
 
     # Include the camera launch file
     camera_launch = IncludeLaunchDescription(PythonLaunchDescriptionSource(
-        [os.path.join(get_package_share_directory('ugv_vision'), 'launch'),
+        [os.path.join(get_package_share_directory('marrtinorobot2_vision'), 'launch'),
          '/camera.launch.py'])
     )
-    
+   
     # Include the apriltag tracking launch file
     apriltag_track_launch = IncludeLaunchDescription(PythonLaunchDescriptionSource(
         [os.path.join(get_package_share_directory('apriltag_ros'), 'launch'),

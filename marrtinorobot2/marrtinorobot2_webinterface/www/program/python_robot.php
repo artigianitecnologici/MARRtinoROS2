@@ -107,92 +107,56 @@
 
 <listing style="font-size:125%;">
 
-textsay = wait_user_speaking( sec )
-result = ask_chatgpt( textsay)
-say(result)
+
+
 
 # motion
+# ==============================
+robot.forward(m)
+robot.backward(m)
+robot.left(deg)
+robot.right(deg)
+robot.setSpeed(lx,az,tm,stopend=False)
 
-enableObstacleAvoidance(False|True) 
-forward(m)
-backward(m)
-left(n)
-right(n)
-turn(deg, ref='REL'|'ABS', frame='odom'|'map'):
-setSpeed(lx,az,tm,stopend=False)
-setSpeed4W(fl,fr,bl,br,tm,stopend=False)
-stop()
-goto(gx,gy,gth)     # map pose (move_base)
-gotoLabel(label)    # semantic map (map_server, move_base)
-gotoTarget(gx,gy, frame='odom'|'map'|'gt')  # no path planning
-p = getRobotPose(frame='odom'|'map'|'gt')  # p[0] : X, p[1] : Y, p[2] : theta
-v = getSpeed()      # v[0]: linear x, v[1]: angular z
 
 # range distance
+# ==============================
+d = robot.obstacleDistance(dir_deg=0)
 
-d = obstacleDistance(dir_deg=0)
-
-
+ 
 # audio
-
-sound(name)
-say(text, language='en')
-s = asr()
-
-
-# modim
-
-show_image(value, which='default')
-show_text(value, which='default')
-
+# ==============================
+robot.sound(name)
+robot.say(text, language='en')
 
 # vision
+# ==============================
+img = robot.getImage() # dysplay image
+n = robot.faceDetection(img)
 
-img = getImage()
-n = faceDetection(img)
-(label,conf) = mobilenetObjrecClient(img[,server,port])
-b = tagTrigger()  # boolean
-id = tagID()      # id
-d = tagDistance() # [m]
-a = tagAngle()    # [deg]
-
+# tag 
+# ==============================
+b = robot.tagTrigger()  # boolean
+id = robot.tagID()      # id
+d = robot.tagDistance() # [m]
+a = robot.tagAngle()    # [deg]
 
 # utils
+# ==============================
+robot.wait(sec)		    # Wait for X seconds
 
-wait(sec)		    # Wait for X seconds
-b = marrtinoOK()	# returns 'true' if the robot is ready
-d = distance(p1,p2)	# Euclidean distance between points p1 and p2
-display(x) 		    # Print the content of 'x' or the result of function 'x' in the Display area 
+# function
 
+robot.display(x) 		    # Print the content of 'x' or the result of function 'x' in the Display area 
 
-# simulator
+# Social
 
-stage_setpose(gx,gy,gth_deg)    # place the simulated robot in gx,gy,gth_deg
 </listing>
 
 <br>
 <hr>
 <br>
 
-<h4>Android smartphone functions</h4>
-
-<p>For exploiting your Android smartphone sensors, "ROS Android Sensors Driver" app is required. Please download and install it from Google Play Store.</p>
-
-<a href="https://play.google.com/store/apps/details?id=org.ros.android.sensors_driver" target="_blank">Link to the page</a>
-
-<p>or</p>
-
-<p>Use this QR code</p>
-
-<img src="QRAndroidDriver.png">
-
-<p>Then, open the App and put the following text in the text area:</p>
-
-<listing style="font-size:125%;">
-http://[your_marrtino_ip]:11311
-</listing>
-
-<p>substituting "[your_marrtino_ip]" with the IP address of your MARRtino robot or your simulator.</p>
 
 
 
