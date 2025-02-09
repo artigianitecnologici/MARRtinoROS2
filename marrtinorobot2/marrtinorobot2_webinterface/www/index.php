@@ -82,7 +82,7 @@
       </div>
       <div class="col-md-1"></div>
     </div>
-    <h6>Interface version 2.0</h6>
+    <h6>Interface version 2.1</h6>
 
     <!-- Cards Section -->
     <div class="row">
@@ -165,7 +165,8 @@
           </a>
           <div class="card-body">
             <div class="d-flex justify-content-center">
-              <a class="btn btn-outline-danger" href="../program/blockly_robot.php" role="button">Blockly Program Interface</a>
+              <a class="btn btn-outline-danger" href="../program/blockly_robot.php" role="button">Blockly </a>
+              <a class="btn btn-outline-danger" href="../program/python_robot.php" role="button">Python 3</a>
             </div>
           </div>
         </div>

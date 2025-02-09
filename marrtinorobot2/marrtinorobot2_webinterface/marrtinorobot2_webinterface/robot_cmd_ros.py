@@ -22,8 +22,14 @@ import rclpy
 from rclpy.node import Node
 from geometry_msgs.msg import Twist
 from std_msgs.msg import String, Float64
-import math
+from sensor_msgs.msg import Image
+from cv_bridge import CvBridge, CvBridgeError
+import cv2
+import os
 import time
+from datetime import datetime
+import math
+
 
 class RobotCmdROS(Node):
     def __init__(self):
@@ -38,6 +44,7 @@ class RobotCmdROS(Node):
         self.TOPIC_tilt = "tilt_controller/command"
         self.TOPIC_right_arm = "right_arm_controller/command"
         self.TOPIC_left_arm = "left_arm_controller/command"
+        self.TOPIC_image = "/camera/image_raw"
         
         # Publisher definitions
         self.emotion_pub = self.create_publisher(String, self.TOPIC_emotion, 10)
@@ -50,6 +57,21 @@ class RobotCmdROS(Node):
         self.right_arm_pub = self.create_publisher(Float64, self.TOPIC_right_arm, 10)
         self.left_arm_pub = self.create_publisher(Float64, self.TOPIC_left_arm, 10)
         self.get_logger().info('RobotCmdROS initialized')
+        # image
+        self.bridge = CvBridge()
+        self.cvimage = None
+        #self.image_sub = self.create_subscription( Image, self.TOPIC_image, self.image_cb, 10)
+        self.image_sub = self.create_subscription(    Image, self.TOPIC_image, self.image_cb, 10)
+
+        self.get_logger().info(f"Subscribed to {self.TOPIC_image}")
+        rclpy.spin_once(self, timeout_sec=1)  # Forza la prima esecuzione del callback
+
+        self.logdir = os.path.expanduser("~/playground/log/")
+        self.imagedir = os.path.expanduser("~/src/marrtinorobot2/marrtinorobot2_webinterface/www/viewer/img")
+        if not os.path.isdir(self.logdir):
+            self.logdir = os.path.expanduser("~/log/")
+        if not os.path.isdir(self.logdir):
+            self.logdir = "/tmp/"
 
     def begin(self):
         self.get_logger().info('Robot control started')
@@ -63,6 +85,38 @@ class RobotCmdROS(Node):
         twist = Twist()
         self.cmd_vel_pub.publish(twist)
         self.get_logger().info('Robot stopped')
+
+    # image
+    
+    def image_cb(self, data):
+        self.get_logger().info(f"Received an image: {data.header.stamp.sec}.{data.header.stamp.nanosec}")
+
+        try:
+            #self.cvimage = self.bridge.imgmsg_to_cv2(data, "bgr8")
+            self.cvimage = self.bridge.imgmsg_to_cv2(data, desired_encoding="passthrough")
+
+            self.get_logger().info("Image converted successfully!")
+        except CvBridgeError as e:
+            self.get_logger().error(f"CV Bridge error: {str(e)}")
+
+    def get_image(self, sleep_time=3):
+        self.get_logger().info("Acquiring image...")
+        time.sleep(sleep_time)  # Attendere la ricezione di un frame
+        if self.cvimage is None:
+            self.get_logger().error("No image received!")
+            return None
+
+        timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
+      
+        img_path = os.path.join(self.imagedir, "lastimage.jpg")
+        cv2.imwrite(img_path, self.cvimage)
+        self.get_logger().info(f"Image saved at {img_path}")
+        return self.cvimage
+    
+    def getImage(self):
+        self.get_image(3)
+         
+    # movement
 
     def forward(self, distance):
         """Move forward by the specified distance in meters."""
@@ -129,7 +183,8 @@ class RobotCmdROS(Node):
         message = String()
         message.data = msg
         self.gesture_pub.publish(message)
-       
+    
+    
 
     def say(self, msg,language):
         self.get_logger().info(f'speech: {msg}')

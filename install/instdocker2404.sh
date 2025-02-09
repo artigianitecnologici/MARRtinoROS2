@@ -4,6 +4,9 @@
 echo "Aggiornando il sistema..."
 sudo apt update && sudo apt upgrade -y
 
+sudo apt install -y curl ca-certificates
+
+
 # Rimuove eventuali versioni preinstallate di Docker
 echo "Rimuovendo vecchie installazioni di Docker..."
 sudo apt remove -y docker docker-engine docker.io containerd runc

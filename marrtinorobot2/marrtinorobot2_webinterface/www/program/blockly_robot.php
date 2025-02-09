@@ -121,7 +121,7 @@
     </block>
   </value>
 </block>
-<!-- <block type="setSpeed">
+<block type="setSpeed">
   <value name="tv">
     <block type="math_number">
       <field name="NUM">0.0</field>
@@ -137,8 +137,7 @@
       <field name="NUM">0.1</field>
     </block>
   </value>
-</block> -->
-
+</block>  
 </category>
 
 <!-- <category colour="0" name="Sensors">
@@ -312,9 +311,14 @@
 
       </div>
       <div class="col-md-3">Face<div class="iframe-container"><iframe loading="lazy" src="/social/marrtina04.html"></iframe>
-                            <div class="iframe-container"><iframe width="100%" height="250" loading="lazy" src="http://10.3.1.1:8080/social/onlyvideo.php"></iframe>
-    
-     </div>
+        <div class="image-container">
+          <img height=300 id='image' src="lastimage/lastimage.jpg" alt=""/>  
+      
+      </div>
+       <!-- <div class="iframe-container"><iframe width="100%" height="250" loading="lazy" src="http://10.3.1.1:8080/social/onlyvideo.php"></iframe>
+        <div align='center'> <img height=300 id='image_default' src="img/lastimage.jpg" alt=""/> </div>
+   
+     </div>  -->
          </div>
       
     </div>
@@ -514,7 +518,10 @@
       // alert("resizing");
       // window.dispatchEvent(new Event('resize'));
   };
-
+  window.setInterval(function()
+    {
+        document.getElementById('image').src = "/viewer/img/lastimage.jpg?random="+new Date().getTime();
+    }, 5000);
 
   </script>
 

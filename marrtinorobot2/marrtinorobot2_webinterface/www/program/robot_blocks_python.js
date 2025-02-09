@@ -376,7 +376,7 @@ Blockly.Python['tag_angle'] = function(block) {
   return [code, Blockly.Python.ORDER_NONE];
 };
 Blockly.Python['get_image'] = function(block) {
-  var code = 'getImage()';
+  var code = 'robot.getImage()';
   return [code, Blockly.Python.ORDER_NONE];
 };
 Blockly.Python['face_detection'] = function(block) {

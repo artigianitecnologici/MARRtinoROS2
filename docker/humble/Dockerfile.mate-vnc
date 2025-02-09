@@ -261,13 +261,18 @@ RUN apt-get update -q && \
 RUN apt-get update && apt-get install -y \
     python3-pip \
     python3-flask \
+    python3-opencv \
     ros-humble-apriltag \
     ros-humble-joy-linux \
+    ros-humble-cv-bridge \
     ros-humble-laser-filters && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Installa opencv-python tramite pip
 RUN pip3 install opencv-python gtts opencv-python-headless dynamixel-sdk pydub
+
+# Assicura compatibilità di numpy
+RUN pip uninstall numpy -y && pip install numpy==1.26.4
 
 USER ubuntu
 # Aggiorna rosdep e installa le dipendenze del workspace ROS 2

@@ -17,42 +17,42 @@
 </head>
 <body>
 
-<?php include "../social/nav.php" ?>
+<?php include "../nav.php" ?>
+
+<div class="container-fluid">
+
+<div class="row">
+       <div class="col-md-6">
+        <!--<button class="btn btn-outline-success" id="hide_code" onclick="hide_blockly() ">Python</button>-->
+        <button class="btn btn-outline-success" id="hide_code" onclick="show_blockly() ">Blockly</button>
+        <button class="btn btn-outline-primary" onclick="showCode()">Show code</button>
+        <button class="btn btn-outline-primary" id="run_btn" onclick="runCode()">Run</button>
+        <button class="btn btn-outline-danger" id="stop_btn" onclick="stopCode()">Stop</button>
+        <button class="btn btn-outline-warning" id="loadfile_btn" onclick="load_from_file()">Load file</button>
+        <button class="btn btn-outline-success"  id="savefile_btn" onclick="save_to_file()">Save file</button>
+        
+        </div>
+       <div class="col-md-6">
+          Robot IP 
+          <script>
+           document.write("<td><input type=\"text\" name=\"IP\" id=\"IP\" value=\"" + 
+                window.location.hostname + "\" width=240></td>")
+        </script>
+         <button onclick="connect()">Connect</button> 
+          <button onclick="disconnect()">Disconnect</button> 
+           
+          <div id="connection"><font color='red'>Not Connected</font> </div>
+     
+          Status 
+          <div id="status" style="color: blue;" >Idle</div>   
+      </div>
+
+    </div>
+    
 
 
-  <h1 align="center">Python robot</h1>
 
-  <div class="container">
 
-  <p>Executing Python programs on robot.</p>
-
-  <p>
-    <table>
-    <tr height=40 style="border:none">
-      <td>Robot IP</td>
-<script>
-      document.write("<td><input type=\"text\" name=\"IP\" id=\"IP\" value=\"" + 
-            window.location.hostname + "\" width=240></td>")
-</script>
-      <tr style="border:none">
-      <td></td>
-      <td>
-		<button onclick="connect()" class="btn waves-effect waves-light blue" style="margin-right:10px">Connect</button>
-		<button onclick="disconnect()" class="btn waves-effect waves-light blue" style="margin-right:10px">Disconnect</button>
-	  </td>	  
-    </tr>
-	<tr>
-		<td></td>
-		<td>
-			<div id="connection"><font color='red'>Not Connected</font></div>
-		</td>
-	</tr>
-    <tr>
-      <td>Status</td>
-      <td><div id="status" style="color: blue;" >Idle</div></td>
-    </tr>
-    </table>
-  </p>
 
   <br>
 
@@ -60,49 +60,20 @@
     <button id="run_btn" onclick="runCode()" class="btn waves-effect waves-light blue" style="margin-right:10px">Run</button>
     <button id="stop_btn" onclick="stopCode()" class="btn waves-effect waves-light blue">Stop</button>
   </p>
-
-  <table border=0>
-  <tr>  <th>Python workspace</th>  </tr>
-  <tr>
-  <td>
-    <div>
-<textarea id="code" rows=20 cols=60 style="height:400px"># Write your robot program here
-
-
-</textarea>
-    </div>
     
-  </td>
-  </tr>
-  </table>
+  <div class="row">
+       <div class="col-md-9">
+            <textarea id="code" rows=20 cols=60 style="height:400px"># Write your robot program here
+            </textarea>
+      </div>
+      <div class="col-md-3">Face<div class="iframe-container"><iframe loading="lazy" src="/social/marrtina04.html"></iframe>
+       <div class="image-container">
+         <img height=300 id='image' src="lastimage/lastimage.jpg" alt=""/>  
+    
+     </div>
+  </div>
 
-<br>
-
-  <table border=0>
-  <tr>  <th>Display</th>  </tr>
-  <tr>
-  <td style="color:#0000FF; background-color: #EEFFCC; font-size: 150%;" width=500 height=50>
-    <div id="display">
-    </div>    
-  </td>
-  </tr>
-  </table>
-
-
-  <table border=0>
-  <tr>  <th>Image</th>  </tr>
-  <tr>
-  <td width=500 height=50 bgcolor=#B0CFB0>
-    <div align='center' > <img height=300 id='image' src="../viewer/img/lastimage.jpg" alt=""/> </div>
-  </td>
-  </tr>
-  </table>
-
-<br><br>
-
-
-<hr>
-
+       </div>
 <h3>Commands</h3>
 
 <listing style="font-size:125%;">
@@ -216,7 +187,7 @@ robot.display(x) 		    # Print the content of 'x' or the result of function 'x' 
 
     window.setInterval(function()
     {
-        document.getElementById('image').src = "../viewer/img/lastimage.jpg?random="+new Date().getTime();
+        document.getElementById('image').src = "/viewer/img/lastimage.jpg?random="+new Date().getTime();
     }, 5000);
 
   </script>
