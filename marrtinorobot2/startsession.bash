@@ -31,7 +31,7 @@ if [ $? != 0 ]; then
   tmux new-window -t $SESSION:1 -n 'camera'  # Window 1 named 'docker'
   tmux new-window -t $SESSION:2 -n 'lidar'  # Window 2 named 'cmdexe'
   tmux new-window -t $SESSION:3 -n 'tts'  # Window 3 named 'robot_bringup'
-  tmux new-window -t $SESSION:4 -n 'slam'  # Window 3 named 'robot_bringup'
+  tmux new-window -t $SESSION:4 -n 'apriltag'  # Window 3 named 'robot_bringup'
   tmux new-window -t $SESSION:5 -n 'blockly'
   tmux new-window -t $SESSION:6 -n 'explorer'
   tmux new-window -t $SESSION:7 -n 'navigation'
@@ -64,7 +64,7 @@ if [ $? != 0 ]; then
 
   # Commands to be executed in window 4 ('slam')
   tmux send-keys -t $SESSION:4 "cd \$MARRTINOROBOT2_WS" C-m
-  #tmux send-keys -t $SESSION:4 "python3 autostart.py >" C-m  # Log output to robot_bringup.log
+  tmux send-keys -t $SESSION:4 "./apriltag.sh " C-m  # Log output to cmdexe.lo
   # sleep 5
   tmux send-keys -t $SESSION:5 "cd ~/src/marrtinorobot2/marrtinorobot2_webinterface/marrtinorobot2_webinterface" C-m
   tmux send-keys -t $SESSION:5 "python3 websocket_robot.py " C-m  # Log to websocket_robot.log
