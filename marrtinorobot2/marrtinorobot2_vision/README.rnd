@@ -66,3 +66,6 @@ ros2 run pointcloud_to_laserscan pointcloud_to_laserscan_node \
 ros2 run v4l2_camera v4l2_camera_node --ros-args -p video_device:="/dev/video0"
 
 ros2 launch apriltag_ros tag_realsense.launch.py camera_name:=/camera image_topic:=image_raw
+
+# getimage
+ros2 topic pub  -1 /getimage std_msgs/msg/String '{data: "get"}'

@@ -23,7 +23,8 @@ from rclpy.node import Node
 from geometry_msgs.msg import Twist
 from std_msgs.msg import String, Float64
 from sensor_msgs.msg import Image
-from cv_bridge import CvBridge, CvBridgeError
+from apriltag_msgs.msg import AprilTagDetectionArray
+#from cv_bridge import CvBridge, CvBridgeError
 import cv2
 import os
 import time
@@ -45,6 +46,8 @@ class RobotCmdROS(Node):
         self.TOPIC_right_arm = "right_arm_controller/command"
         self.TOPIC_left_arm = "left_arm_controller/command"
         self.TOPIC_image = "/camera/image_raw"
+        self.TOPIC_getimage = "/getimage"
+        self.TOPIC_apriltag = "/apriltag_detections"
         
         # Publisher definitions
         self.emotion_pub = self.create_publisher(String, self.TOPIC_emotion, 10)
@@ -56,22 +59,58 @@ class RobotCmdROS(Node):
         self.tilt_pub = self.create_publisher(Float64, self.TOPIC_tilt, 10)
         self.right_arm_pub = self.create_publisher(Float64, self.TOPIC_right_arm, 10)
         self.left_arm_pub = self.create_publisher(Float64, self.TOPIC_left_arm, 10)
+        self.getimage_pub = self.create_publisher(String, self.TOPIC_getimage, 10)
+        self.subscription = self.create_subscription(
+            AprilTagDetectionArray,
+            '/apriltag_detections',
+            self.tag_callback,
+            10  # QoS depth
+        )
+        self.subscription  # prevent unused variable warning
         self.get_logger().info('RobotCmdROS initialized')
-        # image
-        self.bridge = CvBridge()
-        self.cvimage = None
-        #self.image_sub = self.create_subscription( Image, self.TOPIC_image, self.image_cb, 10)
-        self.image_sub = self.create_subscription(    Image, self.TOPIC_image, self.image_cb, 10)
+        # inizialize tag
+        self.tag_id = -1
+        self.tag_size = 0.0
+        self.position = None
+        self.orientation = None
+        self.tag_distance = 0.0
 
-        self.get_logger().info(f"Subscribed to {self.TOPIC_image}")
-        rclpy.spin_once(self, timeout_sec=1)  # Forza la prima esecuzione del callback
 
-        self.logdir = os.path.expanduser("~/playground/log/")
-        self.imagedir = os.path.expanduser("~/src/marrtinorobot2/marrtinorobot2_webinterface/www/viewer/img")
-        if not os.path.isdir(self.logdir):
-            self.logdir = os.path.expanduser("~/log/")
-        if not os.path.isdir(self.logdir):
-            self.logdir = "/tmp/"
+    def tag_callback(self, msg):
+        if msg.detections:
+            for detection in msg.detections:
+                self.tag_id = detection.id[0]
+                self.tag_size = detection.size
+                self.position = detection.pose.pose.pose.position
+                self.orientation = detection.pose.pose.pose.orientation
+                self.tag_distance = detection.pose.pose.pose.position.z
+                
+                self.get_logger().info(f"Tag ID: {self.tag_id}")
+                self.get_logger().info(f"Size: {self.tag_size}")
+                self.get_logger().info(f"Position: x={self.position.x}, y={self.position.y}, z={self.position.z}")
+                self.get_logger().info(f"Orientation: x={self.orientation.x}, y={self.orientation.y}, z={self.orientation.z}, w={self.orientation.w}")
+                self.get_logger().info(f"Tag Distance: {self.tag_distance}")
+                
+        else:
+            self.get_logger().info("No AprilTag detected.")
+    
+
+
+
+    # def tagTrigger():
+    #     global tag_trigger_
+    #     return tag_trigger_
+
+    def tagID(self):
+        return self.tag_id
+
+    def tagDistance(self):
+        return self.tag_distance
+
+    # def tagAngle():
+    #     global tag_angle_
+    #     return tag_angle_
+    
 
     def begin(self):
         self.get_logger().info('Robot control started')
@@ -86,35 +125,13 @@ class RobotCmdROS(Node):
         self.cmd_vel_pub.publish(twist)
         self.get_logger().info('Robot stopped')
 
-    # image
-    
-    def image_cb(self, data):
-        self.get_logger().info(f"Received an image: {data.header.stamp.sec}.{data.header.stamp.nanosec}")
-
-        try:
-            #self.cvimage = self.bridge.imgmsg_to_cv2(data, "bgr8")
-            self.cvimage = self.bridge.imgmsg_to_cv2(data, desired_encoding="passthrough")
-
-            self.get_logger().info("Image converted successfully!")
-        except CvBridgeError as e:
-            self.get_logger().error(f"CV Bridge error: {str(e)}")
-
-    def get_image(self, sleep_time=3):
-        self.get_logger().info("Acquiring image...")
-        time.sleep(sleep_time)  # Attendere la ricezione di un frame
-        if self.cvimage is None:
-            self.get_logger().error("No image received!")
-            return None
-
-        timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
-      
-        img_path = os.path.join(self.imagedir, "lastimage.jpg")
-        cv2.imwrite(img_path, self.cvimage)
-        self.get_logger().info(f"Image saved at {img_path}")
-        return self.cvimage
     
     def getImage(self):
-        self.get_image(3)
+        self.get_logger().info("Acquiring image...")
+        message = String()
+        message.data = "getimage" #msg
+        self.getimage_pub.publish(message)
+        
          
     # movement
 

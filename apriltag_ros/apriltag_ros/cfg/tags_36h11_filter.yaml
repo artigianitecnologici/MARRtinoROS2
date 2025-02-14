@@ -17,6 +17,6 @@ debug: 0                # write additional debugging images to current working d
 # tag_frames: [dock_frame]  # optional frame name
 # tag_sizes: [0.08]        # optional tag-specific edge size
 # Definizione dei tag
-tag_ids: [99, 100, 101]               # ID dei tag
-tag_frames: ['dock_frame', 'tag100_frame', 'tag101_frame']  # Nomi dei frame associati ai tag
-tag_sizes: [0.08, 0.10, 0.12]         # Dimensioni specifiche per ciascun tag (in metri)
+tag_ids: [99, 100, 101,1,2]               # ID dei tag
+tag_frames: ['dock_frame', 'tag100_frame', 'tag101_frame','tag01_frame','tag02_frame']  # Nomi dei frame associati ai tag
+tag_sizes: [0.08, 0.10, 0.12,0.055,0.055]         # Dimensioni specifiche per ciascun tag (in metri)
