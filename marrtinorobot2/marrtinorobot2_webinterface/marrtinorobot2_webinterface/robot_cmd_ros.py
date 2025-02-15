@@ -102,9 +102,11 @@ class RobotCmdROS(Node):
     #     return tag_trigger_
 
     def tagID(self):
+        self.tag_id =101
         return self.tag_id
 
     def tagDistance(self):
+        self.tag_distance = 102
         return self.tag_distance
 
     # def tagAngle():

@@ -359,27 +359,27 @@ Blockly.Python['logic_boolean'] = function(block) {
 };
 
 Blockly.Python['tag_trigger'] = function(block) {
-  var code = 'tagTrigger()';
+  var code = 'robot.tagTrigger()';
   return [code, Blockly.Python.ORDER_NONE];
 };
 
 Blockly.Python['tag_id'] = function(block) {
-  var code = 'tagID()';
+  var code = 'robot.tagID()';
   return [code, Blockly.Python.ORDER_NONE];
 };
 Blockly.Python['tag_distance'] = function(block) {
-  var code = 'tagDistance()';
+  var code = 'robot.tagDistance()';
   return [code, Blockly.Python.ORDER_NONE];
 };
 Blockly.Python['tag_angle'] = function(block) {
-  var code = 'tagAngle()';
+  var code = 'robot.tagAngle()';
   return [code, Blockly.Python.ORDER_NONE];
 };
 Blockly.Python['get_image'] = function(block) {
   var code = 'robot.getImage()';
   return [code, Blockly.Python.ORDER_NONE];
 };
-Blockly.Python['face_detection'] = function(block) {
+Blockly.Python['robot.face_detection'] = function(block) {
   var value_img = Blockly.Python.valueToCode(block, 'img', Blockly.Python.ORDER_ATOMIC);
   var code = 'faceDetection('+value_img+')';
   return [code, Blockly.Python.ORDER_NONE];

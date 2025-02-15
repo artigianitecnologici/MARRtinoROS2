@@ -85,18 +85,6 @@ def display(text):
         except tornado.websocket.WebSocketClosedError:
             print('Cannot write to closed WebSocket')
 
-# def main_loop():
-#     global run, status
-#     while run:
-#         time.sleep(1)
-#         for ws in list_ws:
-#             try:
-#                 ws.write_message(status)
-#             except tornado.websocket.WebSocketClosedError:
-#                 pass
-
-
-
 def main_loop():
     global run, status
     asyncio.set_event_loop(asyncio.new_event_loop())  # Crea un nuovo ciclo eventi per questo thread
@@ -112,67 +100,41 @@ def main_loop():
 fncode_running = False
 
 
-
-# def deffunctioncode(code):
-#     r = "def fncode():\n"
-#     r += "  robot.begin()\n"
-#     for line in code.splitlines():
-#         line = line.strip()
-#         if line and not line.startswith(('begin', 'end')):  # Ignora 'begin()' e 'end()'
-#             r += f"  robot.{line}\n"  # Prefissa 'robot.' a ogni comando
-#     r += "  robot.end()\n"
-#     return r
-
 def deffunctioncode(code):
     r = "def fncode():\n"
-    r += "  robot.begin()\n"
+    #r += "  robot.begin()\n"
     for line in code.splitlines():
         line = line.strip()
         if line and not line.startswith("#"):  # Ignora i commenti
             r += f"  {line}\n"  
             
-    r += "  robot.end()\n"
+    #r += "  robot.end()\n"
     print("Generated function code:\n", r)  # Log del codice generato
     return r
-
-
-
-# def fncodeexcept():
-#     global fncode_running
-#     fncode_running = True
-#     try:
-#         fncode()
-#     except Exception as e:
-#         print(f"CODE EXECUTION ERROR: {e}")
-#         display(str(e))
-#     fncode_running = False
 
 def fncodeexcept(local_context):
     global fncode_running
     fncode_running = True
     try:
+        loop = asyncio.new_event_loop()  # Crea un nuovo event loop
+        asyncio.set_event_loop(loop)  # Imposta il nuovo loop come corrente
         local_context['fncode']()
     except Exception as e:
         print(f"CODE EXECUTION ERROR: {e}")
-        display(str(e))
+        loop.run_until_complete(display(str(e)))  # Usa il loop per eseguire display()
     fncode_running = False
 
-# def exec_thread(code):
-#     global fncode_running, robot
-#     fncodestr = deffunctioncode(code)
+# def fncodeexcept(local_context):
+#     global fncode_running
+#     fncode_running = True
 #     try:
-#         print("Executing with context:", {'robot': robot})
-#         exec(fncodestr, {'robot': robot})  # Passa l'oggetto robot come parte del contesto
+#         local_context['fncode']()
 #     except Exception as e:
-#         print(f"FN CODE DEFINITION ERROR: {e}")
+#         print(f"CODE EXECUTION ERROR: {e}")
 #         display(str(e))
-#         return
+#     fncode_running = False
 
-#     thread = Thread(target=fncodeexcept)
-#     thread.start()
-#     while fncode_running and status != "Stop":
-#         time.sleep(0.5)
-#     thread.join()
+
 
 def exec_thread(code):
     global fncode_running, robot
