@@ -24,9 +24,8 @@ from geometry_msgs.msg import Twist
 from std_msgs.msg import String, Float64
 from sensor_msgs.msg import Image
 from apriltag_msgs.msg import AprilTagDetectionArray
-#from cv_bridge import CvBridge, CvBridgeError
-import cv2
-import os
+
+import threading
 import time
 from datetime import datetime
 import math
@@ -60,40 +59,62 @@ class RobotCmdROS(Node):
         self.right_arm_pub = self.create_publisher(Float64, self.TOPIC_right_arm, 10)
         self.left_arm_pub = self.create_publisher(Float64, self.TOPIC_left_arm, 10)
         self.getimage_pub = self.create_publisher(String, self.TOPIC_getimage, 10)
-        self.subscription = self.create_subscription(
-            AprilTagDetectionArray,
-            '/apriltag_detections',
-            self.tag_callback,
-            10  # QoS depth
-        )
-        self.subscription  # prevent unused variable warning
-        self.get_logger().info('RobotCmdROS initialized')
+        
+        self.get_logger().info('RobotCmdROS v.1.0.0 initialized')
         # inizialize tag
         self.tag_id = -1
         self.tag_size = 0.0
         self.position = None
         self.orientation = None
         self.tag_distance = 0.0
+        self.last_tag_id = 0
+        # Define the 'running' attribute to control the thread execution
+        self.running = True  # ✅ Added to prevent the AttributeError
+        # Initialize the thread for reading AprilTag data
+        self.thread = threading.Thread(target=self.read_apriltag_data, daemon=True)
+        self.thread.start()
 
+    def read_apriltag_data(self):
+        """Thread separato per ascoltare il topic /apriltag_detections."""
+        self.get_logger().info("📡 Thread di lettura attivato!")
 
-    def tag_callback(self, msg):
-        if msg.detections:
-            for detection in msg.detections:
-                self.tag_id = detection.id[0]
-                self.tag_size = detection.size
-                self.position = detection.pose.pose.pose.position
-                self.orientation = detection.pose.pose.pose.orientation
-                self.tag_distance = detection.pose.pose.pose.position.z
-                
-                self.get_logger().info(f"Tag ID: {self.tag_id}")
-                self.get_logger().info(f"Size: {self.tag_size}")
-                self.get_logger().info(f"Position: x={self.position.x}, y={self.position.y}, z={self.position.z}")
-                self.get_logger().info(f"Orientation: x={self.orientation.x}, y={self.orientation.y}, z={self.orientation.z}, w={self.orientation.w}")
-                self.get_logger().info(f"Tag Distance: {self.tag_distance}")
-                
-        else:
-            self.get_logger().info("No AprilTag detected.")
-    
+        # Creazione di un secondo nodo ROS2 all'interno del thread
+        node = rclpy.create_node('apriltag_listener')
+
+        # Crea la subscription per ascoltare il topic
+        subscription = node.create_subscription(
+            AprilTagDetectionArray,
+            '/apriltag_detections',
+            self.process_apriltag_data,
+            10
+        )
+
+        # Loop per elaborare i messaggi ricevuti
+        while self.running:
+            rclpy.spin_once(node, timeout_sec=1)  # Processa i dati ogni secondo
+
+        node.destroy_node()  # Distrugge il nodo alla chiusura
+
+    def process_apriltag_data(self, msg):
+        """Callback per gestire i dati degli AprilTag."""
+        if not msg.detections:
+            #self.get_logger().info("🚫 Nessun AprilTag rilevato.")
+            return
+
+        self.get_logger().info(f"✅ Rilevati {len(msg.detections)} AprilTag!")
+
+        for detection in msg.detections:
+            self.tag_id = detection.id
+
+            self.tag_distance = detection.pose.pose.pose.position.z
+
+            #self.get_logger().info(f"📌 Tag ID: {self.tag_id}, Distanza: {self.tag_distance:.2f}m")
+
+        def stop_thread(self):
+            """Stops the reading thread"""
+            self.running = False  # ✅ Added to stop the loop in the thread
+            self.thread.join()
+            self.get_logger().info("🛑 Thread stopped.")
 
 
 
@@ -102,7 +123,9 @@ class RobotCmdROS(Node):
     #     return tag_trigger_
 
     def tagID(self):
-        self.tag_id =101
+        #self.tag_id =101
+        self.get_logger().info(f"📌 Tag ID: {self.tag_id}, Distanza: {self.tag_distance:.2f}m")
+
         return self.tag_id
 
     def tagDistance(self):
