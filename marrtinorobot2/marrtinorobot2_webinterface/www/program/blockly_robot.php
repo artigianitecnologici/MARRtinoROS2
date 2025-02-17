@@ -139,8 +139,8 @@
   </value>
 </block>  
 </category>
-
-<!-- <category colour="0" name="Sensors">
+<!-- 
+<category colour="0" name="Sensors">
 
 <block type="obstacle_distance"></block>
 <block type="get_pose"></block>
@@ -235,10 +235,11 @@
    <block type="face_detection"></block>
 </category>
 <category colour="60" name="Tag">
-<block type="tag_trigger"></block>
+  <block type="tag_trigger"></block>
    <block type="tag_id"></block>
    <block type="tag_distance"></block>
    <block type="tag_angle"></block>
+   <block type="tag_clean"></block>
 </category>
 <category colour="200" name="Controls">
 

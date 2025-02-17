@@ -358,6 +358,11 @@ Blockly.Python['logic_boolean'] = function(block) {
 
 };
 
+Blockly.Python['tag_clean'] = function(block) {
+  var code = 'robot.tagClean()\r';
+  return code;
+};
+
 Blockly.Python['tag_trigger'] = function(block) {
   var code = 'robot.tagTrigger()';
   return [code, Blockly.Python.ORDER_NONE];
@@ -376,8 +381,8 @@ Blockly.Python['tag_angle'] = function(block) {
   return [code, Blockly.Python.ORDER_NONE];
 };
 Blockly.Python['get_image'] = function(block) {
-  var code = 'robot.getImage()';
-  return [code, Blockly.Python.ORDER_NONE];
+  var code = 'robot.getImage()\r';
+  return code;
 };
 Blockly.Python['robot.face_detection'] = function(block) {
   var value_img = Blockly.Python.valueToCode(block, 'img', Blockly.Python.ORDER_ATOMIC);

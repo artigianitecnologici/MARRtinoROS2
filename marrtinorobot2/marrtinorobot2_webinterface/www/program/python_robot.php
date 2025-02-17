@@ -22,8 +22,8 @@
 <div class="container-fluid">
 
 <div class="row">
-       <div class="col-md-6">
-        <!--<button class="btn btn-outline-success" id="hide_code" onclick="hide_blockly() ">Python</button>-->
+       <!-- <div class="col-md-6">
+        <button class="btn btn-outline-success" id="hide_code" onclick="hide_blockly() ">Python</button>
         <button class="btn btn-outline-success" id="hide_code" onclick="show_blockly() ">Blockly</button>
         <button class="btn btn-outline-primary" onclick="showCode()">Show code</button>
         <button class="btn btn-outline-primary" id="run_btn" onclick="runCode()">Run</button>
@@ -31,7 +31,7 @@
         <button class="btn btn-outline-warning" id="loadfile_btn" onclick="load_from_file()">Load file</button>
         <button class="btn btn-outline-success"  id="savefile_btn" onclick="save_to_file()">Save file</button>
         
-        </div>
+        </div> -->
        <div class="col-md-6">
           Robot IP 
           <script>
@@ -65,7 +65,17 @@
        <div class="col-md-9">
             <textarea id="code" rows=20 cols=60 style="height:400px"># Write your robot program here
             </textarea>
+            <table border=0>
+              <tr>  <th>Display</th>  </tr>
+              <tr>
+              <td style="color:#0000FF; background-color: #EEFFCC; font-size: 150%;" width=500 height=20>
+                <div id="display">
+                </div>    d
+              </td>
+                  </tr>
+          </table>
       </div>
+   
       <div class="col-md-3">Face<div class="iframe-container"><iframe loading="lazy" src="/social/marrtina04.html"></iframe>
        <div class="image-container">
          <img height=300 id='image' src="lastimage/lastimage.jpg" alt=""/>  
@@ -111,6 +121,9 @@ b = robot.tagTrigger()  # boolean
 id = robot.tagID()      # id
 d = robot.tagDistance() # [m]
 a = robot.tagAngle()    # [deg]
+robot.tagClean()
+display((robot.tagID()))
+
 
 # utils
 # ==============================

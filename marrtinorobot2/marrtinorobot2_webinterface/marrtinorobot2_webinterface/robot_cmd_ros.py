@@ -116,20 +116,26 @@ class RobotCmdROS(Node):
             self.thread.join()
             self.get_logger().info("🛑 Thread stopped.")
 
+    # init function 
 
+    def wait(self,seconds):
+        time.sleep(seconds)
 
     # def tagTrigger():
     #     global tag_trigger_
     #     return tag_trigger_
 
+    def tagClean(self):
+        self.tag_id = -1
+        time.sleep(1)
+
     def tagID(self):
-        #self.tag_id =101
         self.get_logger().info(f"📌 Tag ID: {self.tag_id}, Distanza: {self.tag_distance:.2f}m")
 
         return self.tag_id
 
     def tagDistance(self):
-        self.tag_distance = 102
+        self.tag_distance = self.tag_distance
         return self.tag_distance
 
     # def tagAngle():

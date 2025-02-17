@@ -621,6 +621,20 @@ Blockly.Blocks['tag_id'] = {
   }
 };
 
+Blockly.Blocks['tag_clean'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("tag_clean()");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(150);
+ this.setTooltip("returns tag Clean");
+ this.setHelpUrl("");
+  }
+};
+
+
+
 
 Blockly.Blocks['tag_distance'] = {
   init: function() {
@@ -649,8 +663,9 @@ Blockly.Blocks['get_image'] = {
   init: function() {
     this.appendDummyInput()
         .appendField("getImage()");
-    this.setOutput(true, null);
-    this.setColour(0);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(150);
  this.setTooltip("returns a image (img)");
  this.setHelpUrl("");
   }
