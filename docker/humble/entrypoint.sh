@@ -181,8 +181,10 @@ tmux send-keys -t $SESSION:3 "cd ~/src/marrtinorobot2/marrtinorobot2_webinterfac
 tmux send-keys -t $SESSION:3 "python3 robot_bringup.py > $ROBOT_BRINGUP_LOG 2>&1 &" C-m  # Log output to robot_bringup.log
 
 # Commands to be executed in window 4 ('robot_bringup')
-tmux send-keys -t $SESSION:4 "cd ~/src/marrtinorobot2/bringup" C-m
-tmux send-keys -t $SESSION:4 "python3 autostart.py > $AUTOSTART_LOG 2>&1 &" C-m  # Log output to robot_bringup.log
+tmux send-keys -t $SESSION:4 "cd ~/src/marrtinorobot2" C-m
+tmux send-keys -t $SESSION:4 "./startsession.bash"
+# tmux send-keys -t $SESSION:4 "cd ~/src/marrtinorobot2/bringup" C-m
+# tmux send-keys -t $SESSION:4 "python3 autostart.py > $AUTOSTART_LOG 2>&1 &" C-m  # Log output to robot_bringup.log
 
 echo "============================================================================================"
 echo "NOTE 1: --security-opt seccomp=unconfined flag is required to launch Ubuntu Jammy based image."
@@ -190,3 +192,4 @@ echo -e 'See \e]8;;https://github.com/Tiryoh/docker-ros2-desktop-vnc/pull/56\e\\
 echo "============================================================================================"
 
 exec /bin/tini -- supervisord -n -c /etc/supervisor/supervisord.conf
+#

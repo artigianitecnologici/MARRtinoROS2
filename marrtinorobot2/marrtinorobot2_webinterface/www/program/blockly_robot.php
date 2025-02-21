@@ -13,7 +13,7 @@
   <script src="robot_blocks.js"></script>
   <script src="robot_blocks_python.js"></script>
   <script src="websocket_robot.js"></script>
-  
+
 
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
@@ -29,6 +29,21 @@
       font-size: 140%;
     }
   </style>
+    <style>
+      #display {
+        width: 500px;
+        height: 100px;
+        background-color: black;
+        color: #33FF33; /* Fosfori verdi */
+        font-family: 'Courier New', monospace;
+        font-size: 20px;
+        border: 2px solid #33FF33;
+        padding: 10px;
+        resize: none;
+        overflow: hidden;
+        text-shadow: 0px 0px 5px #33FF33;
+  }
+</style>
 </head>
 <body>
 
@@ -335,15 +350,14 @@
 
 <br>
 
-  <table border=0>
-  <tr>  <th>Display</th>  </tr>
+<table border=0>
+  <tr>  <th>Display Monitor</th>  </tr>
   <tr>
-  <td style="color:#0000FF; background-color: #EEFFCC; font-size: 150%;" width=500 height=20>
-    <div id="display">
-    </div>    d
+  <td>
+    <textarea id="display" readonly></textarea>
   </td>
   </tr>
-
+</table>
  
                 <!-- ****** SCRIPTS ****** -->
 
