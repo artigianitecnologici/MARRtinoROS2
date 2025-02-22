@@ -104,7 +104,7 @@ def deffunctioncode(code):
     r = "def fncode():\n"
     #r += "  robot.begin()\n"
     for line in code.splitlines():
-        line = line.strip()
+        #line = line.strip()
         if line and not line.startswith("#"):  # Ignora i commenti
             r += f"  {line}\n"  
             
