@@ -32,7 +32,7 @@
     <style>
       #display {
         width: 500px;
-        height: 100px;
+        height: 200px;
         background-color: black;
         color: #33FF33; /* Fosfori verdi */
         font-family: 'Courier New', monospace;
@@ -55,7 +55,7 @@
 
   </div>
     <div class="row">
-       <div class="col-md-6">
+       <div class="col-md-4">
         <!--<button class="btn btn-outline-success" id="hide_code" onclick="hide_blockly() ">Python</button>-->
         <button class="btn btn-outline-success" id="hide_code" onclick="show_blockly() ">Blockly</button>
         <button class="btn btn-outline-primary" onclick="showCode()">Show code</button>
@@ -65,19 +65,17 @@
         <button class="btn btn-outline-success"  id="savefile_btn" onclick="save_to_file()">Save file</button>
         
         </div>
-       <div class="col-md-6">
+       <div class="col-md-4">
           Robot IP 
           <script>
            document.write("<td><input type=\"text\" name=\"IP\" id=\"IP\" value=\"" + 
                 window.location.hostname + "\" width=240></td>")
         </script>
          <button onclick="connect()">Connect</button> 
-          <button onclick="disconnect()">Disconnect</button> 
-           
-          <div id="connection"><font color='red'>Not Connected</font> </div>
-     
-          Status 
-          <div id="status" style="color: blue;" >Idle</div>   
+        <button onclick="disconnect()">Disconnect</button> 
+        </div>
+        <div class="col-md-1" id="connection"><font color='red'>Not Connected</font> </div>
+        <div class="col-md-1"  id="status" style="color: blue;" >Idle</div>   
       </div>
 
     </div>
@@ -355,6 +353,17 @@
   <tr>
   <td>
     <textarea id="display" readonly></textarea>
+
+  <br>
+  <!-- <button onclick="clearDisplay()" style="
+    background-color: black;
+    color: #33FF33;
+    border: 2px solid #33FF33;
+    padding: 10px;
+    font-family: 'Courier New', monospace;
+    font-size: 16px;
+    cursor: pointer; 
+  ">Clear</button>-->
   </td>
   </tr>
 </table>
@@ -389,7 +398,15 @@
 
     //document.getElementById("run_btn").disabled = true;
     //document.getElementById("stop_btn").disabled = true;
+    // function clearDisplay() {
+    //     document.getElementById("display").value = "";
+    //   }
 
+    //   // Test di riempimento del display
+    //   updateDisplay("Robot Status: Ready\nSpeed: 10\nBattery: 80%");
+
+    //   // Rende la funzione disponibile globalmente
+    //   window.clearDisplay = clearDisplay;
 
     function showCode() {
       // Generate Python code and display it.

@@ -26,12 +26,25 @@ function wsrobot_init(port) {
 
     websocket.onmessage = function(event){
       append("message received: "+event.data);
+
+      // if (event.data.startsWith("display")) {
+      //   val = event.data.substring(8);
+      //   oldVal =  document.getElementById("display").innerHTML ;
+      //   document.getElementById("display").innerHTML = oldval  + val + '\n';
+      // }
+      // else 
+      //   document.getElementById("status").innerHTML = event.data;
       if (event.data.startsWith("display")) {
-        val = event.data.substring(8);
-        document.getElementById("display").innerHTML = val;
+        let val = event.data.substring(8); // Prende il valore dopo "display "
+        let displayBox = document.getElementById("display");
+        
+        // Aggiunge il nuovo valore in una nuova riga
+        displayBox.value += val + "\n";
+        
+        // Scrolla automaticamente in basso
+        displayBox.scrollTop = displayBox.scrollHeight;
       }
-      else 
-        document.getElementById("status").innerHTML = event.data;
+      
 
     } 
 
