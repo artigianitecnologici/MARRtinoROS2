@@ -83,14 +83,15 @@ class DynamixelController(Node):
     # Callback per il comando braccio destro
     def right_arm_callback(self, msg):
         self.get_logger().info(f'Received right arm command (degrees): {msg.data}')
-        right_arm_position = self.degrees_to_position(msg.data)  # Converte i gradi in posizione
+        # 
+        right_arm_position = self.degrees_to_position(150 - msg.data )  # Converte i gradi in posizione
         speed = 50  # Imposta la velocità del motore braccio destro
         self.set_position(self.right_arm_motor_id, right_arm_position, speed)
 
     # Callback per il comando braccio sinistro
     def left_arm_callback(self, msg):
         self.get_logger().info(f'Received left arm command (degrees): {msg.data}')
-        left_arm_position = self.degrees_to_position(msg.data)  # Converte i gradi in posizione
+        left_arm_position = self.degrees_to_position(150 + msg.data)  # Converte i gradi in posizione
         speed = 50  # Imposta la velocità del motore braccio sinistro
         self.set_position(self.left_arm_motor_id, left_arm_position, speed)
 

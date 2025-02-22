@@ -520,7 +520,7 @@ Blockly.Blocks['left_arm'] = {
         .appendField(new Blockly.FieldImage("img/tilt.png", 20, 20, "left_elbow %"));
     this.appendDummyInput()
         .appendField("sign")
-        .appendField(new Blockly.FieldDropdown([["+","+"]]), "Sign");
+        .appendField(new Blockly.FieldDropdown([["+","+"],["-","-"]]), "Sign");
     this.appendValueInput("steps")
         .setCheck("Number")
         .appendField("left_arm");
@@ -540,7 +540,7 @@ Blockly.Blocks['right_arm'] = {
         .appendField(new Blockly.FieldImage("img/tilt.png", 20, 20, "right_elbow %"));
     this.appendDummyInput()
         .appendField("sign")
-        .appendField(new Blockly.FieldDropdown([["+","+"]]), "Sign");
+        .appendField(new Blockly.FieldDropdown([["+","+"],["-","-"]]), "Sign");
     this.appendValueInput("steps")
         .setCheck("Number")
         .appendField("right_arm");
