@@ -37,7 +37,7 @@ Blockly.Python['right'] = function(block) {
 
 Blockly.Python['wait'] = function(block) {
   var value_seconds = Blockly.Python.valueToCode(block, 'seconds', Blockly.Python.ORDER_ATOMIC);
-  var code = 'wait('+value_seconds+')\n';
+  var code = 'robot.wait('+value_seconds+')\n';
   return code;
 };
 
@@ -51,7 +51,7 @@ Blockly.Python['setSpeed'] = function(block) {
   var value_tv = Blockly.Python.valueToCode(block, 'tv', Blockly.Python.ORDER_ATOMIC);
   var value_rv = Blockly.Python.valueToCode(block, 'rv', Blockly.Python.ORDER_ATOMIC);
   var value_time = Blockly.Python.valueToCode(block, 'time', Blockly.Python.ORDER_ATOMIC);
-  var code = 'setSpeed('+value_tv+','+value_rv+','+value_time+',False)\n';
+  var code = 'robot.setSpeed('+value_tv+','+value_rv+','+value_time+',False)\n';
   return code;
 };
 

@@ -108,7 +108,7 @@ class RobotCmdROS(Node):
 
             self.tag_distance = detection.pose.pose.pose.position.z
 
-            #self.get_logger().info(f"📌 Tag ID: {self.tag_id}, Distanza: {self.tag_distance:.2f}m")
+            self.get_logger().info(f"📌 Tag ID: {self.tag_id}, Distanza: {self.tag_distance:.2f}m")
 
         def stop_thread(self):
             """Stops the reading thread"""
