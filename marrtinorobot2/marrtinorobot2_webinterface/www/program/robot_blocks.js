@@ -514,6 +514,45 @@ Blockly.Blocks['hand_left'] = {
 };
 
 
+Blockly.Blocks['left_arm'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldImage("img/tilt.png", 20, 20, "left_elbow %"));
+    this.appendDummyInput()
+        .appendField("sign")
+        .appendField(new Blockly.FieldDropdown([["+","+"]]), "Sign");
+    this.appendValueInput("steps")
+        .setCheck("Number")
+        .appendField("left_arm");
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(120);
+ this.setTooltip("left_arm");
+ this.setHelpUrl("");
+  }
+};
+
+
+Blockly.Blocks['right_arm'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldImage("img/tilt.png", 20, 20, "right_elbow %"));
+    this.appendDummyInput()
+        .appendField("sign")
+        .appendField(new Blockly.FieldDropdown([["+","+"]]), "Sign");
+    this.appendValueInput("steps")
+        .setCheck("Number")
+        .appendField("right_arm");
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(120);
+ this.setTooltip("right_arm");
+ this.setHelpUrl("");
+  }
+};
+
 /**
  * Common HSV hue for all blocks in this category.
 

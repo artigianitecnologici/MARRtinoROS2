@@ -49,7 +49,7 @@
 
 
   <?php include "../nav.php" ?>
-
+ 
   <div class="container-fluid">
 
 
@@ -175,8 +175,20 @@
 <block type="pan"> </block>
 <block type="tilt"> </block>
 
+
 <!-- <block type="get_nro_of_face"></block> -->
 </category>
+
+<category colour="120" name="SMARRtino">
+<block type="right_arm"> </block>
+<block type="left_arm"> </block>
+<block type="pan"> </block>
+<block type="tilt"> </block>
+</category>
+
+
+
+
 <category colour="0" name="Code">
  <!-- 
 <block type="wait_user_speaking">
