@@ -172,8 +172,7 @@
 <block type="left_elbow"> </block>
 <block type="hand_right"> </block>
 <block type="hand_left"> </block>
-<block type="pan"> </block>
-<block type="tilt"> </block>
+
 
 
 <!-- <block type="get_nro_of_face"></block> -->

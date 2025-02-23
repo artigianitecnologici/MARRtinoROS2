@@ -331,6 +331,9 @@ Blockly.Blocks['pan'] = {
   init: function() {
     this.appendDummyInput()
         .appendField(new Blockly.FieldImage("img/pan.png", 20, 20, "Head pan"));
+    this.appendDummyInput()
+        .appendField("sign")
+        .appendField(new Blockly.FieldDropdown([["+","+"],["-","-"]]), "Sign");
     this.appendValueInput("steps")
         .setCheck("Number")
         .appendField("pan");
@@ -348,6 +351,9 @@ Blockly.Blocks['tilt'] = {
   init: function() {
     this.appendDummyInput()
         .appendField(new Blockly.FieldImage("img/tilt.png", 20, 20, "Head tilt"));
+    this.appendDummyInput()
+        .appendField("sign")
+        .appendField(new Blockly.FieldDropdown([["+","+"],["-","-"]]), "Sign");
     this.appendValueInput("steps")
         .setCheck("Number")
         .appendField("tilt");

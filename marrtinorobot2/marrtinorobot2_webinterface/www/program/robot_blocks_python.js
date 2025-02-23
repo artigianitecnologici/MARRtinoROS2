@@ -159,8 +159,9 @@ Blockly.Python['get_nro_of_face'] = function(block) {
 Blockly.Python['pan'] = function(block) {
   var value_sign = block.getFieldValue('Sign');
   var value_steps = Blockly.Python.valueToCode(block, 'steps', Blockly.Python.ORDER_ATOMIC);
+  if ( parseInt(value_steps) < 80 ) { value_steps = 80 } ;
   if ( value_sign == '-') { 
-    value_steps = -value_steps;
+     value_steps = -value_steps;
   }
   var value_pos = (value_steps); // / 100) -0.5;
   var code = 'robot.pan('+value_pos+')\n';
@@ -170,9 +171,11 @@ Blockly.Python['pan'] = function(block) {
 Blockly.Python['tilt'] = function(block) {
   var value_sign = block.getFieldValue('Sign');
   var value_steps = Blockly.Python.valueToCode(block, 'steps', Blockly.Python.ORDER_ATOMIC);
+  if ( parseInt(value_steps) < 80 ) { value_steps = 80 } ;
   if ( value_sign == '-') { 
-    value_steps = -value_steps;
+     value_steps = -value_steps;
   }
+  
   var value_pos = (value_steps / 100) -0.5 * -1;
   var code = 'robot.tilt('+value_pos+')\n';
   return code;
@@ -180,7 +183,7 @@ Blockly.Python['tilt'] = function(block) {
 
 // 150 Rappresenza 0 --
 Blockly.Python['right_shoulder_flexion'] = function(block) {
-  var value_sign = block.getFieldValue('Sign');
+ 
   var value_steps = Blockly.Python.valueToCode(block, 'steps', Blockly.Python.ORDER_ATOMIC);
   if ( value_sign == '+') { 
     // Up
