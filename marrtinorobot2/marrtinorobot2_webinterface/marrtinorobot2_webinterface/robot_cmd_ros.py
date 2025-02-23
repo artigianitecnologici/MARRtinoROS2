@@ -24,6 +24,7 @@ from geometry_msgs.msg import Twist
 from std_msgs.msg import String, Float64
 from sensor_msgs.msg import Image
 from apriltag_msgs.msg import AprilTagDetectionArray
+from rclpy.executors import SingleThreadedExecutor
 
 import threading
 import time
@@ -74,10 +75,29 @@ class RobotCmdROS(Node):
         self.thread = threading.Thread(target=self.read_apriltag_data, daemon=True)
         self.thread.start()
 
-    def read_apriltag_data(self):
-        """Thread separato per ascoltare il topic /apriltag_detections."""
-        self.get_logger().info("📡 Thread di lettura attivato!")
+    # def read_apriltag_data(self):
+    #     """Thread separato per ascoltare il topic /apriltag_detections."""
+    #     self.get_logger().info("📡 Thread di lettura attivato!")
 
+    #     # Creazione di un secondo nodo ROS2 all'interno del thread
+    #     node = rclpy.create_node('apriltag_listener')
+
+    #     # Crea la subscription per ascoltare il topic
+    #     subscription = node.create_subscription(
+    #         AprilTagDetectionArray,
+    #         '/apriltag_detections',
+    #         self.process_apriltag_data,
+    #         10
+    #     )
+
+    #     # Loop per elaborare i messaggi ricevuti
+    #     while self.running:
+    #         rclpy.spin_once(node, timeout_sec=1)  # Processa i dati ogni secondo
+
+    #     node.destroy_node()  # Distrugge il nodo alla chiusura
+
+    def read_apriltag_data(self):
+        self.get_logger().info("📡 Thread di lettura attivato!")
         # Creazione di un secondo nodo ROS2 all'interno del thread
         node = rclpy.create_node('apriltag_listener')
 
@@ -89,11 +109,17 @@ class RobotCmdROS(Node):
             10
         )
 
+        # Creazione di un executor dedicato
+        #from rclpy.executors import SingleThreadedExecutor
+        executor = SingleThreadedExecutor()
+        executor.add_node(node)
+
         # Loop per elaborare i messaggi ricevuti
         while self.running:
-            rclpy.spin_once(node, timeout_sec=1)  # Processa i dati ogni secondo
+            executor.spin_once(timeout_sec=1)
 
         node.destroy_node()  # Distrugge il nodo alla chiusura
+
 
     def process_apriltag_data(self, msg):
         """Callback per gestire i dati degli AprilTag."""

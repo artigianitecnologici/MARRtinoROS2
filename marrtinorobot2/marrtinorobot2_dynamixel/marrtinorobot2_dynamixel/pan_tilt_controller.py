@@ -69,14 +69,14 @@ class DynamixelController(Node):
     # Callback per il comando pan
     def pan_callback(self, msg):
         self.get_logger().info(f'Received pan command (degrees): {msg.data}')
-        pan_position = self.degrees_to_position(msg.data)  # Converte i gradi in posizione
+        pan_position = self.degrees_to_position(150 + msg.data)  # Converte i gradi in posizione
         speed = 50  # Imposta la velocità del motore Pan
         self.set_position(self.pan_motor_id, pan_position, speed)
 
     # Callback per il comando tilt
     def tilt_callback(self, msg):
         self.get_logger().info(f'Received tilt command (degrees): {msg.data}')
-        tilt_position = self.degrees_to_position(msg.data)  # Converte i gradi in posizione
+        tilt_position = self.degrees_to_position(150 + msg.data)  # Converte i gradi in posizione
         speed = 50  # Imposta la velocità del motore Tilt
         self.set_position(self.tilt_motor_id, tilt_position, speed)
 
