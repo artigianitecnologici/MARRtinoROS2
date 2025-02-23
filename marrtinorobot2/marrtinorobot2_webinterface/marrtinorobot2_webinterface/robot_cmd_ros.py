@@ -177,7 +177,7 @@ class RobotCmdROS(Node):
         start_time = time.time()
         while (time.time() - start_time) < duration:
             self.cmd_vel_pub.publish(twist)
-            self.get_logger().info(f'Publishing: {twist}')
+            #self.get_logger().info(f'Publishing: {twist}')
             rclpy.spin_once(self, timeout_sec=0.1)
         self.stop()
 
@@ -192,7 +192,7 @@ class RobotCmdROS(Node):
         start_time = time.time()
         while (time.time() - start_time) < duration:
             self.cmd_vel_pub.publish(twist)
-            self.get_logger().info(f'Publishing: {twist}')
+            #self.get_logger().info(f'Publishing: {twist}')
             rclpy.spin_once(self, timeout_sec=0.1)
         self.stop()
 
@@ -207,7 +207,7 @@ class RobotCmdROS(Node):
         start_time = time.time()
         while (time.time() - start_time) < duration:
             self.cmd_vel_pub.publish(twist)
-            self.get_logger().info(f'Publishing: {twist}')
+            #self.get_logger().info(f'Publishing: {twist}')
             rclpy.spin_once(self, timeout_sec=0.1)
         self.stop()
 
@@ -222,7 +222,7 @@ class RobotCmdROS(Node):
         start_time = time.time()
         while (time.time() - start_time) < duration:
             self.cmd_vel_pub.publish(twist)
-            self.get_logger().info(f'Publishing: {twist}')
+            #self.get_logger().info(f'Publishing: {twist}')
             rclpy.spin_once(self, timeout_sec=0.1)
         self.stop()
 

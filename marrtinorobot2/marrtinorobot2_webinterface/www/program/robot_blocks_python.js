@@ -320,8 +320,8 @@ Blockly.Python['left_arm'] = function(block) {
      
   }
   if ( value_sign == '-') { 
-    // if ( value_steps > 30 )
-    if ( parseInt(value_steps) < 80 ) { value_steps = -80  }
+    value_steps = -value_steps;
+    if ( parseInt(value_steps) < -80 ) { value_steps = -80  }
      
   }
   var value_pos = (  parseInt(value_steps)) ;
@@ -338,8 +338,8 @@ Blockly.Python['right_arm'] = function(block) {
      
   }
   if ( value_sign == '-') { 
-    
-    if ( parseInt(value_steps) < 80 ) { value_steps = -80  }
+    value_steps = -value_steps;
+    if ( parseInt(value_steps) < -80 ) { value_steps = -80  }
      
   }
   var value_pos = (  parseInt(value_steps)) ;
