@@ -399,7 +399,7 @@ Blockly.Python['logic_boolean'] = function(block) {
 };
 
 Blockly.Python['tag_clean'] = function(block) {
-  var code = 'robot.tagClean()\r';
+  var code = 'robot.tagClean()\n';
   return code;
 };
 
