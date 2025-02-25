@@ -11,7 +11,8 @@ class TTSNode(Node):
 
     def __init__(self):
         super().__init__('tts_node')
-        self.get_logger().info('Start tts_node v.1.01')
+        self.LOOP_FREQUENCY = 10 
+        self.get_logger().info('Start tts_node v.1.02')
         self.publisher_ = self.create_publisher(String, '/speech/status', 10)
         
         # Subscription to receive text to speak
