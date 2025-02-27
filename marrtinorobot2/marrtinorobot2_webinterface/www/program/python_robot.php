@@ -14,6 +14,21 @@
   <!--<script src="js/jquery-3.4.1.min.js"></script>-->
   <script src="bootstrap/js/bootstrap.min.js"></script>
   <script src="websocket_robot.js"></script>  
+  <style>
+      #display {
+        width: 500px;
+        height: 200px;
+        background-color: black;
+        color: #33FF33; /* Fosfori verdi */
+        font-family: 'Courier New', monospace;
+        font-size: 20px;
+        border: 2px solid #33FF33;
+        padding: 10px;
+        resize: none;
+        overflow: hidden;
+        text-shadow: 0px 0px 5px #33FF33;
+  }
+</style>
 </head>
 <body>
 
@@ -66,14 +81,24 @@
             <textarea id="code" rows=20 cols=60 style="height:400px"># Write your robot program here
             </textarea>
             <table border=0>
-              <tr>  <th>Display</th>  </tr>
+              <tr>  <th>Display Monitor</th>  </tr>
               <tr>
-              <td style="color:#0000FF; background-color: #EEFFCC; font-size: 150%;" width=500 height=20>
-                <div id="display">
-                </div>    d
+              <td>
+                <textarea id="display" readonly></textarea>
+
+              <br>
+              <!-- <button onclick="clearDisplay()" style="
+                background-color: black;
+                color: #33FF33;
+                border: 2px solid #33FF33;
+                padding: 10px;
+                font-family: 'Courier New', monospace;
+                font-size: 16px;
+                cursor: pointer; 
+              ">Clear</button>-->
               </td>
-                  </tr>
-          </table>
+              </tr>
+            </table>
       </div>
    
       <div class="col-md-3">Face<div class="iframe-container"><iframe loading="lazy" src="/social/marrtina04.html"></iframe>

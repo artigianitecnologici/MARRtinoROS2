@@ -77,11 +77,18 @@ class MyWebSocketServer(tornado.websocket.WebSocketHandler):
     def check_origin(self, origin):
         return True
 
-def display(text):
+# def display(text):
+#     global list_ws
+#     for ws in list_ws:
+#         try:
+#             ws.write_message(f'display {text}')
+#         except tornado.websocket.WebSocketClosedError:
+#             print('Cannot write to closed WebSocket')
+async def display(text):
     global list_ws
     for ws in list_ws:
         try:
-            ws.write_message(f'display {text}')
+            ws.write_message(f'display {text}')  # ✅ Usa await
         except tornado.websocket.WebSocketClosedError:
             print('Cannot write to closed WebSocket')
 
@@ -100,52 +107,103 @@ def main_loop():
 fncode_running = False
 
 
-def deffunctioncode(code):
-    r = "def fncode():\n"
-    #r += "  robot.begin()\n"
-    for line in code.splitlines():
-        #line = line.strip()
-        if line and not line.startswith("#"):  # Ignora i commenti
-            r += f"  {line}\n"  
+# def deffunctioncode(code):
+#     r = "def fncode():\n"
+#     #r += "  robot.begin()\n"
+#     for line in code.splitlines():
+#         #line = line.strip()
+#         if line and not line.startswith("#"):  # Ignora i commenti
+#             r += f"  {line}\n"  
             
-    #r += "  robot.end()\n"
+#     #r += "  robot.end()\n"
+#     print("Generated function code:\n", r)  # Log del codice generato
+#     return r
+def deffunctioncode(code):
+    r = "async def fncode():\n"  # ✅ Deve essere async per usare await!
+    for line in code.splitlines():
+        if line and not line.startswith("#"):  # Ignora i commenti
+            if line.strip().startswith("display("):  # Se è una chiamata a display, aggiungi await
+                r += f"  await {line.strip()}\n"  
+            else:
+                r += f"  {line}\n"
     print("Generated function code:\n", r)  # Log del codice generato
     return r
 
-def fncodeexcept(local_context):
-    global fncode_running
-    fncode_running = True
-    try:
-        loop = asyncio.new_event_loop()  # Crea un nuovo event loop
-        asyncio.set_event_loop(loop)  # Imposta il nuovo loop come corrente
-        local_context['fncode']()
-    except Exception as e:
-        print(f"CODE EXECUTION ERROR: {e}")
-        loop.run_until_complete(display(str(e)))  # Usa il loop per eseguire display()
-    fncode_running = False
 
 # def fncodeexcept(local_context):
 #     global fncode_running
 #     fncode_running = True
 #     try:
+#         loop = asyncio.new_event_loop()  # Crea un nuovo event loop
+#         asyncio.set_event_loop(loop)  # Imposta il nuovo loop come corrente
 #         local_context['fncode']()
 #     except Exception as e:
 #         print(f"CODE EXECUTION ERROR: {e}")
-#         display(str(e))
+#         loop.run_until_complete(display(str(e)))  # Usa il loop per eseguire display()
 #     fncode_running = False
 
+def fncodeexcept(local_context):
+    global fncode_running
+    fncode_running = True
+    try:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        loop.run_until_complete(local_context['fncode']())  # ✅ Esegui la coroutine
+    except NameError as e:
+        error_msg = f"SYNTAX ERROR: {e}"
+        print(error_msg)
+        loop.run_until_complete(display(error_msg))  # ✅ Usa run_until_complete
+    except Exception as e:
+        error_msg = f"CODE EXECUTION ERROR: {e}"
+        print(error_msg)
+        loop.run_until_complete(display(error_msg))  # ✅ Usa run_until_complete
+    fncode_running = False
 
+
+
+
+# def exec_thread(code):
+#     global fncode_running, robot
+#     fncodestr = deffunctioncode(code)
+#     local_context = {'robot': robot}
+#     try:
+#         print("Executing with context:", local_context)
+#         exec(fncodestr, globals(), local_context)  # Passa il contesto globale e locale
+#     except Exception as e:
+#         print(f"FN CODE DEFINITION ERROR: {e}")
+#         display(str(e))
+#         return
+
+#     # Assicurati che la funzione fncode esista
+#     if 'fncode' not in local_context:
+#         print("ERROR: fncode not defined")
+#         return
+
+#     thread = Thread(target=fncodeexcept, args=(local_context,))
+#     thread.start()
+#     while fncode_running and status != "Stop":
+#         time.sleep(0.5)
+#     thread.join()
+
+import asyncio
 
 def exec_thread(code):
     global fncode_running, robot
     fncodestr = deffunctioncode(code)
     local_context = {'robot': robot}
+
     try:
         print("Executing with context:", local_context)
         exec(fncodestr, globals(), local_context)  # Passa il contesto globale e locale
+    except NameError as e:
+        error_msg = f"SYNTAX ERROR: {e}"
+        print(error_msg)
+        send_error_to_display(error_msg)  # ✅ Usa una funzione sicura per WebSocket
+        return
     except Exception as e:
-        print(f"FN CODE DEFINITION ERROR: {e}")
-        display(str(e))
+        error_msg = f"FN CODE DEFINITION ERROR: {e}"
+        print(error_msg)
+        send_error_to_display(error_msg)
         return
 
     # Assicurati che la funzione fncode esista
@@ -158,6 +216,18 @@ def exec_thread(code):
     while fncode_running and status != "Stop":
         time.sleep(0.5)
     thread.join()
+
+
+def send_error_to_display(error_msg):
+    """Gestisce correttamente la visualizzazione dell'errore su WebSocket"""
+    try:
+        loop = asyncio.get_event_loop()
+        if loop.is_running():
+            asyncio.ensure_future(display(error_msg))
+        else:
+            loop.run_until_complete(display(error_msg))
+    except RuntimeError:
+        asyncio.run(display(error_msg))
 
 
 def save_program(code):
